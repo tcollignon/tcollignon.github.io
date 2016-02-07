@@ -1,0 +1,5 @@
+= How-to use tomcat 8 Resources in server.xml 
+
+This mecanism allow user to start webapp in tomcat 8 without packaging (like .WAR). 
+
+This is interesting in development, to run application
