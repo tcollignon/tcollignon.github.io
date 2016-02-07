@@ -2,4 +2,4 @@
 
 This mecanism allow user to start webapp in tomcat 8 without packaging (like .WAR). 
 
-This is interesting in development, to run application
+This is interesting in development, to run application as fast as possible.
