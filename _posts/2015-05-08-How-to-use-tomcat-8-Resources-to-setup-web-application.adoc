@@ -1,5 +1,87 @@
-= How-to use tomcat 8 Resources in server.xml 
+:hp-tags: Tomcat
 
-This mecanism allow user to start webapp in tomcat 8 without packaging (like .WAR). 
+= How-to use tomcat 8 Resources to setup web application
+
+This mecanism allow user to start webapp in tomcat 8 without packaging (like WAR). 
 
 This is interesting in development, to run application as fast as possible.
+
+In Tomcat 6x, 7x this is called _Virtual Web App_, in Tomcat 8x there is a new way to do this : Resources
+
+Documentation about Tomcat Resources is here : https://tomcat.apache.org/tomcat-8.0-doc/config/resources.html
+
+
+== Write the configuration
+
+To use this, it's necessary to write webapp configuration in tomcat _server.xml_ file.
+
+This is an example for an application with some jars, java classes and web parts (jsp and web.xml).
+
+The structure of application in the repository is :
+
+* testWebapp
+
+** src/main/java
+
+*** some java files
+
+** src/main/webapp
+
+*** somes jsp
+
+*** WEB-INF/web.xml
+
+** pom.xml _with jar dependencies_ (hibernate for example)
+
+Classic way will packaging a WAR file with this structure :
+
+* META-INF
+
+* WEB-INF
+
+** classes _(contains .class files)_
+
+** lib _(contains .jar files)_
+
+** web.xml
+
+With tomcat resources, we package nothing, and just write into server.xml file :
+
+[xml]
+----
+<Context docBase="/tmp/testWebapp/src/main/webapp" path="/testWebapp" reloadable="false">
+ <Resources>
+  <PostResources base="/tmp/testWebapp/target/classes" 
+                className="org.apache.catalina.webresources.DirResourceSet" 
+                webAppMount="/WEB-INF/classes"/>
+  <PostResources base="/Work/mavenRepository/org/hibernate/hibernate-core/4.3.7.Final/hibernate-core-4.3.7.Final.jar"
+                className="org.apache.catalina.webresources.JarResourceSet" 
+                webAppMount="/WEB-INF/classes"/>
+ </Resources>
+</Context>
+----
+
+The order of each _Resources_ declaration is important for the tomcat classloader.
+
+It's surprising to mount jar in _WEB-INF/classes_ instead of _WEB-INF/lib_, but this is the only way I found to make it work correctly with _JarResourceSet_. The next configuration is dangerous, because it's not link the right jar, and cause wrong loading in application, I suggest to not using this : 
+
+[xml]
+----
+<Context docBase="/tmp/testWebapp/src/main/webapp" path="/testWebapp" reloadable="false">
+ <Resources>
+  <PostResources base="/tmp/testWebapp/target/classes" 
+                className="org.apache.catalina.webresources.DirResourceSet" 
+                webAppMount="/WEB-INF/classes"/>
+  <PostResources base="/Work/mavenRepository/org/hibernate/hibernate-core/4.3.7.Final"
+                className="org.apache.catalina.webresources.DirResourceSet" 
+                webAppMount="/WEB-INF/lib"/>
+ </Resources>
+</Context>
+----
+
+== Who use this ? 
+
+link:https://github.com/tesla/m2eclipse-webby[Webby] use link:https://codehaus-cargo.github.io/cargo/Home.html[cargo] with Virtual Web App concept to run application in eclipse.
+
+This is pretty faster than other way (like WTP), because it pick-up jars in Maven local repository, and will not paste each jar in temporay folder. Each jar is declared in tomcat _server.xml_ configuration file.
+
