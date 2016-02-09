@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Accelerate tomcat 7/8 start-up</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//tcollignon.github.io/themes/Casper/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//tcollignon.github.io/themes/Casper/assets/css/screen.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html" />
+    
+    <meta property="og:site_name" content="TCO Blog" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Accelerate tomcat 7/8 start-up" />
+    <meta property="og:description" content="As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..." />
+    <meta property="og:url" content="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html" />
+    <meta property="article:published_time" content="2016-02-08T23:00:00.000Z" />
+    <meta property="article:modified_time" content="2016-02-09T19:21:30.539Z" />
+    <meta property="article:tag" content="Tomcat" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Accelerate tomcat 7/8 start-up" />
+    <meta name="twitter:description" content="As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..." />
+    <meta name="twitter:url" content="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "TCO Blog",
+    "author": {
+        "@type": "Person",
+        "name": "COLLIGNON Thomas",
+        "image": "https://avatars.githubusercontent.com/u/1019783?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": null
+    },
+    "headline": "Accelerate tomcat 7/8 start-up",
+    "url": "https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html",
+    "datePublished": "2016-02-08T23:00:00.000Z",
+    "dateModified": "2016-02-09T19:21:30.539Z",
+    "keywords": "Tomcat",
+    "description": "As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="TCO Blog" href="https://tcollignon.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-Tomcat">
+
+    
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        <a class="back-button icon-arrow-left" href="https://tcollignon.github.io">Home</a>
+        <!-- <a class="subscribe-button icon-feed" href="https://tcollignon.github.io/rss/">Subscribe</a> -->
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-Tomcat">
+
+        <header class="post-header">
+            <h1 class="post-title">Accelerate tomcat 7/8 start-up</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-02-09">09 February 2016</time>  on <a href="https://tcollignon.github.io/tag/Tomcat">Tomcat</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>As it mentionned in this excellent article : <a href="https://wiki.apache.org/tomcat/HowTo/FasterStartUp" class="bare">https://wiki.apache.org/tomcat/HowTo/FasterStartUp</a>, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version.</p>
+</div>
+<div class="paragraph">
+<p>This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 :</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Tomcat 7</th>
+<th class="tableblock halign-left valign-top">Tomcat 8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable scanning webapp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable sanning web-fragment jar</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Excludes jars for scanning</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">system properties only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">system properties or element in context</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable WebSocket support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">element in context</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">element in context</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable JSP support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not available</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">element in context</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reduce SecureRandom instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jvm option</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jvm option</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Now this is some examples to each case</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_web_xml">Configure web.xml</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_disable_scanning_the_web_application">Disable scanning the web application</h3>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>&lt;web-app <strong>metadata-complete="true"</strong>&gt;
+&#8230;&#8203;
+&lt;/web-app&gt;</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disable_scanning_web_fragment_jar">Disable scanning web-fragment jar</h3>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>&lt;web-app&gt;</p>
+</div>
+<div class="paragraph">
+<p><strong>&lt;absolute-ordering /&gt;</strong></p>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>&lt;/web-app&gt;</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_context">Configure context</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There is 2 way to do this, regarding How the application is deployed :
+* If the application is packaging with the classic way (WAR for example)
+<strong> this can be in META-INF/context.xml of the application
+* If the application is deployed with Tomcat 7 VirtualWebApp concept or Tomcat 8 Resources mecanism (see <a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html">this article</a> for more explanations)
+</strong> this can be in server.xml file under the <em>&lt;Host&gt;</em> who defined the application</p>
+</div>
+<div class="sect2">
+<h3 id="_excludes_jars_for_scanning">Excludes jars for scanning</h3>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>&lt;Context&gt;</p>
+</div>
+<div class="paragraph">
+<p><strong>&lt;JarScanner&gt;</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>&lt;JarScanFilter defaultTldScan="false"/&gt;</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>&lt;/JarScanner&gt;</strong></p>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>&lt;/Context&gt;</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disable_websocket_support">Disable WebSocket support</h3>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>&lt;Context <strong>containerSciFilter="org.apache.tomcat.websocket.server.WsSci"</strong>&gt;</p>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>&lt;/Context&gt;</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disable_jsp_support_only_tomcat_8">Disable JSP support (only tomcat 8)</h3>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>&lt;Context <strong>containerSciFilter="org.apache.jasper.servlet.JasperInitializer"</strong>&gt;</p>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>&lt;/Context&gt;</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_jvm">Configure JVM</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_reduce_securerandom_instance_to_generate_random">Reduce SecureRandom instance to generate random</h3>
+<div class="paragraph">
+<p>Set this option in the JVM who launch Tomcat (e.g. in <em>JAVA_OPTS</em> or <em>CATALINA_OPTS</em> environnment variable)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>-Djava.security.egd=file:/dev/./urandom</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_some_performance_tests_examples">Some performance tests examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>TODO</strong></p>
+</div>
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="" style="background-image: url(https://avatars.githubusercontent.com/u/1019783?v=3)"><span class="hidden">COLLIGNON Thomas's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="">COLLIGNON Thomas</a></h4>
+
+                    <p>Read <a href="">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    <span class="author-location icon-location">Metz</span>
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Accelerate%20tomcat%207%2F8%20start-up&amp;url=https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="https://tcollignon.github.io">TCO Blog</a> &copy; 2016</section>
+        <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+    </footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <script type="text/javascript" src="//tcollignon.github.io/themes/Casper/assets/js/jquery.fitvids.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//tcollignon.github.io/themes/Casper/assets/js/index.js?v=1.0.0"></script>
+
+</body>
+</html>
