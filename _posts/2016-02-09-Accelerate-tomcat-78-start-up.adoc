@@ -1,0 +1,14 @@
+:hp-tags: Tomcat
+
+= Accelerate tomcat 7/8 start-up
+
+As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version.
+
+== Configure web.xml
+
+=== Disable scanning the web application 
+
+It will be done by settings this in Tomcat 7 and 8 : 
+
+
+
