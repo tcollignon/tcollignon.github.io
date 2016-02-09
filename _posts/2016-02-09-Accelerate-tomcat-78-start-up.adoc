@@ -4,11 +4,120 @@
 
 As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version.
 
+This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 :
+
+|===
+| |Tomcat 7 |Tomcat 8 
+
+|Disable scanning webapp
+|web.xml
+|web.xml
+
+|Disable sanning web-fragment jar
+|web.xml
+|web.xml
+
+|Excludes jars for scanning
+|system properties only
+|system properties or element in context
+
+|Disable WebSocket support
+|element in context
+|element in context
+
+|Disable JSP support
+|not available
+|element in context
+
+|Reduce SecureRandom instance
+|jvm option
+|jvm option
+|===
+
+Now this is some examples to each case
+
 == Configure web.xml
 
 === Disable scanning the web application 
 
-It will be done by settings this in Tomcat 7 and 8 : 
+[source,xml]
+====
+<web-app *metadata-complete="true"*>
+...
+</web-app>
+====
 
 
+=== Disable scanning web-fragment jar
 
+[source,xml]
+====
+<web-app>
+
+*<absolute-ordering />*
+
+...
+
+</web-app>
+====
+
+== Configure context
+
+There is 2 way to do this, regarding How the application is deployed :
+* If the application is packaging with the classic way (WAR for example)
+** this can be in META-INF/context.xml of the application
+* If the application is deployed with Tomcat 7 VirtualWebApp concept or Tomcat 8 Resources mecanism (see link:https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html[this article] for more explanations)
+** this can be in server.xml file under the _<Host>_ who defined the application
+
+=== Excludes jars for scanning
+
+[source,xml]
+====
+<Context>
+
+*<JarScanner>*
+
+*<JarScanFilter defaultTldScan="false"/>*
+
+*</JarScanner>*
+
+...
+
+</Context>
+====
+
+=== Disable WebSocket support
+
+[source,xml]
+====
+<Context *containerSciFilter="org.apache.tomcat.websocket.server.WsSci"*>
+
+...
+
+</Context>
+====
+
+
+=== Disable JSP support (only tomcat 8)
+
+[source,xml]
+====
+<Context *containerSciFilter="org.apache.jasper.servlet.JasperInitializer"*>
+
+...
+
+</Context>
+====
+
+== Configure JVM
+
+=== Reduce SecureRandom instance to generate random
+
+Set this option in the JVM who launch Tomcat (e.g. in _JAVA_OPTS_ or _CATALINA_OPTS_ environnment variable)
+
+----
+-Djava.security.egd=file:/dev/./urandom
+----
+
+== Some performance tests examples
+*TODO*
