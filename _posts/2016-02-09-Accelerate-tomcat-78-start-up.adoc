@@ -2,7 +2,7 @@
 
 = Accelerate tomcat 7/8 start-up
 
-As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version.
+As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter to the out-of-the-box version.
 
 This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 :
 
@@ -13,7 +13,7 @@ This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 :
 |web.xml
 |web.xml
 
-|Disable sanning web-fragment jar
+|Disable scanning web-fragment jar
 |web.xml
 |web.xml
 
@@ -34,21 +34,27 @@ This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 :
 |jvm option
 |===
 
-Now this is some examples to each case
+Now see some examples to each case
 
 == Configure web.xml
 
-=== Disable scanning the web application 
+=== Disable scanning the web application
+
+Put metadata-complete attribute to web-app tag.
 
 [source,xml]
 ====
 <web-app *metadata-complete="true"*>
+
 ...
+
 </web-app>
 ====
 
 
 === Disable scanning web-fragment jar
+
+Add absolute-ordering tag
 
 [source,xml]
 ====
@@ -56,20 +62,22 @@ Now this is some examples to each case
 
 *<absolute-ordering />*
 
-...
 
 </web-app>
 ====
 
 == Configure context
 
-There is 2 way to do this, regarding How the application is deployed :
+There is 2 way to do this, regarding how the application is deployed :
+
 * If the application is packaging with the classic way (WAR for example)
 ** this can be in META-INF/context.xml of the application
 * If the application is deployed with Tomcat 7 VirtualWebApp concept or Tomcat 8 Resources mecanism (see link:https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html[this article] for more explanations)
 ** this can be in server.xml file under the _<Host>_ who defined the application
 
 === Excludes jars for scanning
+
+Add JarScanner tag
 
 [source,xml]
 ====
@@ -81,12 +89,13 @@ There is 2 way to do this, regarding How the application is deployed :
 
 *</JarScanner>*
 
-...
 
 </Context>
 ====
 
 === Disable WebSocket support
+
+Put containerSciFilter attribute to Context tag
 
 [source,xml]
 ====
@@ -99,6 +108,8 @@ There is 2 way to do this, regarding How the application is deployed :
 
 
 === Disable JSP support (only tomcat 8)
+
+Put containerSciFilter attribute to Context tag
 
 [source,xml]
 ====
@@ -120,4 +131,45 @@ Set this option in the JVM who launch Tomcat (e.g. in _JAVA_OPTS_ or _CATALINA_O
 ----
 
 == Some performance tests examples
-*TODO*
+
+This tests are being executed on a simple web application with one REST service based on CXF and Spring.
+
+This is not a real benchmark, it's just for illustrate each options.
+
+|===
+| |Tomcat 8 with WAR |Tomcat 8 with Resources
+
+|out of the box
+|4647ms
+|7036ms
+
+|Disable scanning webapp
+|4611ms
+|6968ms
+
+|Disable scanning web-fragment jar
+|3898ms
+|5493ms
+
+|Excludes jars for scanning
+|3827ms
+|5343ms
+
+|Disable WebSocket support
+|3782ms
+|3777ms
+
+|Disable JSP support
+|Not tested
+|Not tested
+
+|Reduce SecureRandom instance
+|Not tested
+|Not tested
+|===
+
+* Tomcat 8 WAR
+** Start at *4647ms* to *3782ms*
+
+* Tomcat 8 Resources
+** Start at *7036ms* to *3777ms*
