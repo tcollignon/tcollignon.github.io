@@ -20,15 +20,15 @@
     <meta property="og:site_name" content="TCO Blog" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Accelerate tomcat 7/8 start-up" />
-    <meta property="og:description" content="As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..." />
+    <meta property="og:description" content="As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter to the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..." />
     <meta property="og:url" content="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html" />
     <meta property="article:published_time" content="2016-02-08T23:00:00.000Z" />
-    <meta property="article:modified_time" content="2016-02-09T19:21:30.539Z" />
+    <meta property="article:modified_time" content="2016-02-09T21:42:09.223Z" />
     <meta property="article:tag" content="Tomcat" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Accelerate tomcat 7/8 start-up" />
-    <meta name="twitter:description" content="As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..." />
+    <meta name="twitter:description" content="As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter to the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..." />
     <meta name="twitter:url" content="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html" />
     
     <script type="application/ld+json">
@@ -46,9 +46,9 @@
     "headline": "Accelerate tomcat 7/8 start-up",
     "url": "https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html",
     "datePublished": "2016-02-08T23:00:00.000Z",
-    "dateModified": "2016-02-09T19:21:30.539Z",
+    "dateModified": "2016-02-09T21:42:09.223Z",
     "keywords": "Tomcat",
-    "description": "As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..."
+    "description": "As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter to the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7..."
 }
     </script>
 
@@ -83,7 +83,7 @@
             <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As it mentionned in this excellent article : <a href="https://wiki.apache.org/tomcat/HowTo/FasterStartUp" class="bare">https://wiki.apache.org/tomcat/HowTo/FasterStartUp</a>, tomcat will be very faster to start-up if you add some parameter than the out-of-the-box version.</p>
+<p>As it mentionned in this excellent article : <a href="https://wiki.apache.org/tomcat/HowTo/FasterStartUp" class="bare">https://wiki.apache.org/tomcat/HowTo/FasterStartUp</a>, tomcat will be very faster to start-up if you add some parameter to the out-of-the-box version.</p>
 </div>
 <div class="paragraph">
 <p>This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 :</p>
@@ -108,7 +108,7 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disable sanning web-fragment jar</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable scanning web-fragment jar</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">web.xml</p></td>
 </tr>
@@ -135,7 +135,7 @@
 </tbody>
 </table>
 <div class="paragraph">
-<p>Now this is some examples to each case</p>
+<p>Now see some examples to each case</p>
 </div>
 </div>
 </div>
@@ -144,18 +144,28 @@
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_disable_scanning_the_web_application">Disable scanning the web application</h3>
+<div class="paragraph">
+<p>Put metadata-complete attribute to web-app tag.</p>
+</div>
 <div class="exampleblock">
 <div class="content">
 <div class="paragraph">
-<p>&lt;web-app <strong>metadata-complete="true"</strong>&gt;
-&#8230;&#8203;
-&lt;/web-app&gt;</p>
+<p>&lt;web-app <strong>metadata-complete="true"</strong>&gt;</p>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>&lt;/web-app&gt;</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_disable_scanning_web_fragment_jar">Disable scanning web-fragment jar</h3>
+<div class="paragraph">
+<p>Add absolute-ordering tag</p>
+</div>
 <div class="exampleblock">
 <div class="content">
 <div class="paragraph">
@@ -163,9 +173,6 @@
 </div>
 <div class="paragraph">
 <p><strong>&lt;absolute-ordering /&gt;</strong></p>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
 </div>
 <div class="paragraph">
 <p>&lt;/web-app&gt;</p>
@@ -179,14 +186,37 @@
 <h2 id="_configure_context">Configure context</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There is 2 way to do this, regarding How the application is deployed :
-* If the application is packaging with the classic way (WAR for example)
-<strong> this can be in META-INF/context.xml of the application
-* If the application is deployed with Tomcat 7 VirtualWebApp concept or Tomcat 8 Resources mecanism (see <a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html">this article</a> for more explanations)
-</strong> this can be in server.xml file under the <em>&lt;Host&gt;</em> who defined the application</p>
+<p>There is 2 way to do this, regarding how the application is deployed :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If the application is packaging with the classic way (WAR for example)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this can be in META-INF/context.xml of the application</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If the application is deployed with Tomcat 7 VirtualWebApp concept or Tomcat 8 Resources mecanism (see <a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html">this article</a> for more explanations)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this can be in server.xml file under the <em>&lt;Host&gt;</em> who defined the application</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 <div class="sect2">
 <h3 id="_excludes_jars_for_scanning">Excludes jars for scanning</h3>
+<div class="paragraph">
+<p>Add JarScanner tag</p>
+</div>
 <div class="exampleblock">
 <div class="content">
 <div class="paragraph">
@@ -202,9 +232,6 @@
 <p><strong>&lt;/JarScanner&gt;</strong></p>
 </div>
 <div class="paragraph">
-<p>&#8230;&#8203;</p>
-</div>
-<div class="paragraph">
 <p>&lt;/Context&gt;</p>
 </div>
 </div>
@@ -212,6 +239,9 @@
 </div>
 <div class="sect2">
 <h3 id="_disable_websocket_support">Disable WebSocket support</h3>
+<div class="paragraph">
+<p>Put containerSciFilter attribute to Context tag</p>
+</div>
 <div class="exampleblock">
 <div class="content">
 <div class="paragraph">
@@ -228,6 +258,9 @@
 </div>
 <div class="sect2">
 <h3 id="_disable_jsp_support_only_tomcat_8">Disable JSP support (only tomcat 8)</h3>
+<div class="paragraph">
+<p>Put containerSciFilter attribute to Context tag</p>
+</div>
 <div class="exampleblock">
 <div class="content">
 <div class="paragraph">
@@ -264,7 +297,85 @@
 <h2 id="_some_performance_tests_examples">Some performance tests examples</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>TODO</strong></p>
+<p>This tests are being executed on a simple web application with one REST service based on CXF and Spring.</p>
+</div>
+<div class="paragraph">
+<p>This is not a real benchmark, it&#8217;s just for illustrate each options.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Tomcat 8 with WAR</th>
+<th class="tableblock halign-left valign-top">Tomcat 8 with Resources</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">out of the box</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4647ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7036ms</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable scanning webapp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4611ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6968ms</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable scanning web-fragment jar</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3898ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5493ms</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Excludes jars for scanning</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3827ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5343ms</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable WebSocket support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3782ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3777ms</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disable JSP support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not tested</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not tested</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reduce SecureRandom instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not tested</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not tested</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
+<li>
+<p>Tomcat 8 WAR</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Start at <strong>4647ms</strong> to <strong>3782ms</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Tomcat 8 Resources</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Start at <strong>7036ms</strong> to <strong>3777ms</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
