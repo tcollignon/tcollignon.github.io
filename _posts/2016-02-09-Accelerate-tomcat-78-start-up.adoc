@@ -120,6 +120,19 @@ Put containerSciFilter attribute to Context tag
 </Context>
 ====
 
+=== Disable both WebSocket and JSP support (only tomcat 8)
+
+Put containerSciFilter attribute to Context tag with RegExp
+
+[source,xml]
+====
+<Context *containerSciFilter="org.apache.tomcat.websocket.server.WsSci|org.apache.jasper.servlet.JasperInitializer"*>
+
+...
+
+</Context>
+====
+
 == Configure JVM
 
 === Reduce SecureRandom instance to generate random
@@ -161,7 +174,7 @@ This is not a real benchmark, it's just for illustrate each options.
 
 |Disable JSP support
 |Not tested
-|Not tested
+|3760ms
 
 |Reduce SecureRandom instance
 |Not tested
@@ -172,4 +185,4 @@ This is not a real benchmark, it's just for illustrate each options.
 ** Start at *4647ms* to *3782ms*
 
 * Tomcat 8 Resources
-** Start at *7036ms* to *3777ms*
+** Start at *7036ms* to *3760ms*
