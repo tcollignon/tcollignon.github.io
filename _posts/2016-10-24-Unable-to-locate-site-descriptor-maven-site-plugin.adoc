@@ -1,0 +1,57 @@
+:hp-tags: Maven
+
+= Unable to locate site descriptor : maven-site-plugin
+
+If you run maven-site-plugin in project with inheritance, you may be confronted to this error : 
+
+----
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-site-plugin:3.4:site (default-site) on project XXXXX: SiteToolException: The site descriptor cannot be resolved from the repository: ArtifactResolutionException: Unable to locate site descriptor: Could not transfer artifact [PARENT-PROJECT]:xml:site_en:<version>
+----
+
+== Explanations
+
+When maven-site-plugin is located in project with inheritence, it search the parent projet descriptor in order to manage optionnal inheritence in descriptor file (_site.xml_). So it search in the repository this kind of file : *<parent-artifactId>-<parent-version>-site_<lang>.xml*
+
+Since Maven 3.X in project of type pom, the descriptor is no longer attach to the project. So it will not be install or deploy. So by default, you will never find parent descriptor in the repository. However you don't get always the previous error.
+
+Indeed, maven-site-plugin will try to search the parent descriptor in every repository you defined in maven configuration (_settings.xml_), and if it don't find, it will exit without error.
+
+So now, what's the problem ?
+
+When maven-site-plugin search in every repository, it happen that some repository is not accessible (credentials problem!), and it that case, it will fail with previous error. And the fact is, this error don't happened on every customers of the same project. That's because maybe are directly with Maven central, others are maybe with Artifactory/Nexus proxy, or something else.
+
+== Problems
+
+The main problem is : If I don't want or use inheritence in descriptor why I have got this error, and what are the solutions?
+
+The first thing is that maven-site-plugin by default don't know if descriptor need inheritence or not. So by default if the project have a parent pom, it will search parent descriptor. Theres is no options in maven-site-plugin for now to desactivate this.
+
+== Solutions
+
+After reading many article of this problem and read the maven-site and descriptor documentation, I found (at least) 3 options to deal with this "feature" :
+
+1. Add parent (and parent.parent recursively if necessary) descriptor in the repository
+2. Avoid repository credentials issue
+3. Tell maven-site-plugin to not using inheritence in descriptor
+
+=== Add parent descriptor in the repository
+
+To do this with Maven 3.X, you need to attach the descriptor in the parent projet, in order to deploy it. For that you need to call *attach-descriptor* goal. You can bind this goal in the parent pom by default. See this documentation if you need more informations : https://maven.apache.org/plugins/maven-site-plugin/attach-descriptor-mojo.html 
+
+If you need or will need descriptor inheritence, this is the best option.
+
+=== Avoid repository credentials issue
+
+In fact, the main problem here is the credentials issue when maven-site-plugin try to find parent descriptor in the repositories. So to avoid the problem, you can add permissions in all of the declared repositories and all will be fine. 
+
+This is not my favourite option because sometimes you can't or don't want to change repository permissions. This is only a hack to get around this problem.
+
+=== Tell maven-site-plugin to not using inheritence
+
+The solution I found in maven site documentation is telling
+
+
+== Links
+
+* http://stackoverflow.com/questions/23597456/how-to-avoid-checking-parent-project-in-maven-site-plugin
+* http://stackoverflow.com/questions/22215831/how-do-i-get-maven-site-descriptors-to-deploy-to-artifactory
