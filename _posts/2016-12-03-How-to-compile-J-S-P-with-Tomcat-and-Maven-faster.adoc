@@ -172,8 +172,8 @@ And this is a little benchmark of this plugins with my project (2700 jsp).
 
 |leonardehrenfried/jspc-maven-plugin 1.1.0
 |50s
-|1.3Gb
-|20%-30%
+|1.35Gb
+|20%%
 
 |leonardehrenfried/jspc-maven-plugin with my PR (4 threads)
 |1min25
