@@ -121,3 +121,10 @@ This feature works only if we gave all the jsp to jspc. (see first fix).
 If we take multiple threads, this parameter works only if it's "false".
 If it's true, each thread with stop at first error.
 See pull request TODO to add this feature.
+
+== Conclusion
+
+If the wholes PR are accepted, the plugin will be much faster and will permit to not stop at the first error.
+I think this maybe start a "version 2.X" of this plugin because one PR need java 7.
+I think this plugin can give Tomcat 8 by default now (especially if it start 2.X version).
+
