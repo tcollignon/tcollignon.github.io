@@ -157,6 +157,7 @@ I found this major ones :
 ** allow different version of tomcat compiler (by design in code)
 ** fork of the Codehaus jspc-maven-plugin
 ** does not provide stopAtFirstError=false for now (but there are current PR for that)
+** does not provide includes/excludes parameters
 * jspc-maven-plugin from codehaus
 ** no more maintained
 ** does not provide stopAtFirstError=false
@@ -187,9 +188,9 @@ And this is a little benchmark of this plugins with my project (2700 jsp).
 |60%
 
 |jspc-maven-plugin from codehaus
-|17s
-|1.35Gb
-|90%
+|not possible because not support tomcat 8
+|
+|
 
 |jetty-jspc-maven-plugin
 |17s
