@@ -116,24 +116,24 @@ I test this on HP ZBook i7 Windows 7.
 | |Time |Java Heap |CPU
 
 |out of the box 1.1.0
-|50s
-|1.3Gb
-|20%-30%
+|18min18s
+|1.35Gb
+|20%
 
 |Giving all jsp to jspc.execute
-|30sec
-|1.1Gb
-|20%-30%
+|3min43s
+|1.35Gb
+|20%
 
 |With 2 threads
-|21s
+|2min5s
 |1.35Gb
-|60%
+|40%-60%
 
 |With 4 threads
-|17s
+|1min25
 |1.35Gb
-|90%
+|80%
 |===
 
 == Second fix : stop at first error
