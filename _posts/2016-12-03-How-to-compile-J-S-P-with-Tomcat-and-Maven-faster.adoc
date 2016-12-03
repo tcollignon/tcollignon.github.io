@@ -153,7 +153,7 @@ During this case I search other Maven plugins who compile JSP with Tomcat. It's 
 I found this major ones : 
 
 * https://github.com/Jasig/jspc-maven-plugin
-** recent upgrade
+** 1 recent upgrade
 ** allow different version of tomcat compiler (by design in code)
 ** fork of the Codehaus jspc-maven-plugin
 ** does not provide stopAtFirstError=false for now (but there are current PR for that)
