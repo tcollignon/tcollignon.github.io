@@ -11,3 +11,11 @@ If I must compile for tomcat, I usually take this Maven plugin : https://github.
 I take this plugin because I think it's pretty simple, and it give availabilty to add includes/excludes of jsp.
 This Maven config to the job in War project : 
 
+[source,xml]
+====
+<web-app *metadata-complete="true"*>
+
+...
+
+</web-app>
+====
