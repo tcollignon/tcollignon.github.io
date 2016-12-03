@@ -173,9 +173,9 @@ And this is a little benchmark of this plugins with my project (2700 jsp).
 | |Time |Java Heap |CPU
 
 |leonardehrenfried/jspc-maven-plugin 1.1.0
-|50s
+|18min18s
 |1.35Gb
-|20%%
+|20%
 
 |leonardehrenfried/jspc-maven-plugin with my PR (4 threads)
 |1min25
@@ -183,9 +183,9 @@ And this is a little benchmark of this plugins with my project (2700 jsp).
 |80%
 
 |Jasig/jspc-maven-plugin
-|21s
+|3min22s
 |1.35Gb
-|60%
+|20%
 
 |jspc-maven-plugin from codehaus
 |not possible because not support tomcat 8
