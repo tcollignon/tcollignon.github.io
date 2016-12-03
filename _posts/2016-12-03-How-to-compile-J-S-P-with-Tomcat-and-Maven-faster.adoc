@@ -152,12 +152,18 @@ See pull request TODO to add this feature.
 During this case I search other Maven plugins who compile JSP with Tomcat. It's not easy beacause JSP it's very fashionable...
 I found this major ones : 
 
+* https://github.com/leonardehrenfried/jspc-maven-plugin
+** no recent upgrade
+** provide includes/excludes parameters
+** trace all jsp in log when compiling
+** fork of jetty-jspc-maven-plugin
 * https://github.com/Jasig/jspc-maven-plugin
 ** 1 recent upgrade
 ** allow different version of tomcat compiler (by design in code)
 ** fork of the Codehaus jspc-maven-plugin
 ** does not provide stopAtFirstError=false for now (but there are current PR for that)
 ** does not provide includes/excludes parameters
+** trace all jsp in log when compiling
 * jspc-maven-plugin from codehaus
 ** no more maintained
 ** does not provide stopAtFirstError=false
@@ -166,6 +172,7 @@ I found this major ones :
 ** design by and for jetty
 ** if we give jasper dependency we can use this for tomcat
 ** does not provide stopAtFirstError=false for now
+** trace all jsp in log at startup
 
 And this is a little benchmark of this plugins with my project (2700 jsp).
 
@@ -193,9 +200,9 @@ And this is a little benchmark of this plugins with my project (2700 jsp).
 |
 
 |jetty-jspc-maven-plugin
-|17s
-|1.35Gb
-|90%
+|3min50s
+|1.37Gb
+|20%
 |===
 
 == Conclusion
