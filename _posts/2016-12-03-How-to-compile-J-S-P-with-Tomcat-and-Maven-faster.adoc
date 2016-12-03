@@ -15,7 +15,35 @@ This Maven config to the job in War project :
 ====
 <web-app *metadata-complete="true"*>
 
-...
+TODO
 
 </web-app>
 ====
+
+== Some problems of this plugin
+
+If we have many jsp (> 500) the plugin can take lot of time to compile all files. (see the benchmark after)
+The other problem is this plugin will stop and fail at the first jsp who contains error. 
+And even at the first error in the jsp! If a jsp contains 5 errors, we must run 5 times the plugin to discover all.
+So if a big project contains multiples errors, we must run may times the plugin and so many times the full compilation of all jsp.
+
+== First fix : performance
+
+In order to compile a big project faster, I propose different things
+
+=== Give all jsp to Jasper JSPC
+
+In version 1.1.0 of the plugin, it takes all of the jsp and call execute JSPC for each of them.
+This is the code : 
+
+[source,java]
+====
+for (String fileName : jspFiles) {
+	jspc.setJspFiles(fileName);
+	getLog().info("Compiling " + fileName);
+	jspc.execute();
+}
+
+====
+
+Maybe it's an optimization with Tomcat 6.X, but I think with Tomcat 8.X it's slower than giving all JSP directly to JSPC.execute();
