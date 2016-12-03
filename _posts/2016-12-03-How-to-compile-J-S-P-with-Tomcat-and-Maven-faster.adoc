@@ -86,3 +86,38 @@ I test this on HP ZBook i7 Windows 7.
 |1.35Gb
 |90%
 |===
+
+* 3000 jsp
+
+|===
+| |Time |Java Heap |CPU
+
+|out of the box 1.1.0
+|50s
+|1.3Gb
+|20%-30%
+
+|Giving all jsp to jspc.execute
+|30sec
+|1.1Gb
+|20%-30%
+
+|With 2 threads
+|21s
+|1.35Gb
+|60%
+
+|With 4 threads
+|17s
+|1.35Gb
+|90%
+|===
+
+== Second fix : stop at first error
+
+To avoid this behavior, I add new parameter : stopAtFirstError (true by default for retro-compatibility).
+Indeed Jasper JSPC provide a parameter "failOnError" wich allow to continue even if error were raised.
+This feature works only if we gave all the jsp to jspc. (see first fix).
+If we take multiple threads, this parameter works only if it's "false".
+If it's true, each thread with stop at first error.
+See pull request TODO to add this feature.
