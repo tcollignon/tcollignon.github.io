@@ -147,6 +147,12 @@ If we take multiple threads, this parameter works only if it's "false".
 If it's true, each thread with stop at first error.
 See pull request TODO to add this feature.
 
+== Comparing to other Maven plugins
+
+During this case I search other Maven plugins who compile JSP with Tomcat. It's not easy beacause JSP it's very fashionable...
+I found this major ones : 
+* 
+
 == Conclusion
 
 If the wholes PR are accepted, the plugin will be much faster and will permit to not stop at the first error.
