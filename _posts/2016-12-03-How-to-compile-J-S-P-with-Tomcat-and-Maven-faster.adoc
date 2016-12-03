@@ -47,3 +47,15 @@ for (String fileName : jspFiles) {
 ====
 
 Maybe it's an optimization with Tomcat 6.X, but I think with Tomcat 8.X it's slower than giving all JSP directly to JSPC.execute();
+See pull request TODO to fix this.
+
+=== Execute compilation in parallel
+
+To compile faster we need to compile in parallel.
+Indeed when we launch JavaMissionControl for example, we see the CPU is 20%-30% usage when compiling.
+To increase CPU usage, we need to execute jspc in different thread.
+See pull request TODO to add this feature.
+
+=== Benchmark
+
+I made a little benchmark with two projects : one with 400 jsp and one with 3000 jsp.
