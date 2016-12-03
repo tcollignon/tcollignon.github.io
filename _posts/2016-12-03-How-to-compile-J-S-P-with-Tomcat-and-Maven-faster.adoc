@@ -118,6 +118,8 @@ I test this on HP ZBook i7 Windows 7.
 To avoid this behavior, I add new parameter : stopAtFirstError (true by default for retro-compatibility).
 Indeed Jasper JSPC provide a parameter "failOnError" wich allow to continue even if error were raised.
 This feature works only if we gave all the jsp to jspc. (see first fix).
+But we need to fail maven build if we have jsp error, but when we call jspc with "failOnError=false", it raise no exception.
+So the only way I found right now is to add a Log handler who tell the Mojo if jspc raise a SEVERE error in his log.
 If we take multiple threads, this parameter works only if it's "false".
 If it's true, each thread with stop at first error.
 See pull request TODO to add this feature.
