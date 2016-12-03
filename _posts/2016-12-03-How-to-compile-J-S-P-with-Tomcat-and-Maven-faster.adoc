@@ -160,6 +160,7 @@ I found this major ones :
 * jspc-maven-plugin from codehaus
 ** no more maintained
 ** does not provide stopAtFirstError=false
+** does not provide tomcat 8 compiler (only tomcat 6)
 * https://www.eclipse.org/jetty/documentation/current/jetty-jspc-maven-plugin.html
 ** design by and for jetty
 ** if we give jasper dependency we can use this for tomcat
