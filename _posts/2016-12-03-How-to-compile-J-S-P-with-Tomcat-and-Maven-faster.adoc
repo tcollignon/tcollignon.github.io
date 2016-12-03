@@ -1,0 +1,13 @@
+:hp-tags: Tomcat JSP Maven
+
+= How to compile JSP with Tomcat and Maven faster
+
+When I must pre-compile JSP with tomcat, it's usually pain because it takes a lot of time.
+Let's see How compile this faster.
+
+== How to compile JSP
+
+If I must compile for tomcat, I usually take this Maven plugin : https://github.com/leonardehrenfried/jspc-maven-plugin
+I take this plugin because I think it's pretty simple, and it give availabilty to add includes/excludes of jsp.
+This Maven config to the job in War project : 
+
