@@ -59,3 +59,30 @@ See pull request TODO to add this feature.
 === Benchmark
 
 I made a little benchmark with two projects : one with 400 jsp and one with 3000 jsp.
+I test this on HP ZBook i7 Windows 7.
+
+* 400 jsp
+
+|===
+| |Time |Java Heap |CPU
+
+|out of the box 1.1.0
+|50s
+|1.3Gb
+|20%-30%
+
+|Giving all jsp to jspc.execute
+|30sec
+|1.1Gb
+|20%-30%
+
+|With 2 threads
+|21s
+|1.35Gb
+|60%
+
+|With 4 threads
+|17s
+|1.35Gb
+|90%
+|===
