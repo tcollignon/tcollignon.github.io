@@ -228,7 +228,9 @@ I think this plugin can give Tomcat 8 by default now (especially if it start 2.X
 		<goals>
 			<goal>compile</goal>
 		</goals>
-		<configuration>									 <inputWebXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</inputWebXml>							<defaultSourcesDirectory>${project.build.directory}/${project.artifactId}-${project.version}</defaultSourcesDirectory>
+		<configuration>
+        	<inputWebXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</inputWebXml>
+            <defaultSourcesDirectory>${project.build.directory}/${project.artifactId}-${project.version}</defaultSourcesDirectory>
 		</configuration>
 		</execution>
 	</executions>
@@ -258,8 +260,9 @@ I think this plugin can give Tomcat 8 by default now (especially if it start 2.X
 		<goals>
 			<goal>jspc</goal>
 		</goals>
-			<configuration>							<webXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</webXml>
-									<webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
+			<configuration>
+            	<webXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</webXml>
+				<webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
 			</configuration>							
 		</execution>
 	</executions>
