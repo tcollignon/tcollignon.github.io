@@ -211,3 +211,75 @@ If the wholes PR are accepted, the plugin will be much faster and will permit to
 I think this maybe start a "version 2.X" of this plugin because one PR need java 7.
 I think this plugin can give Tomcat 8 by default now (especially if it start 2.X version).
 
+== Annex
+
+=== Jasig JSPC maven plugin config
+
+[source,xml]
+----
+<plugin>
+	<groupId>org.jasig.mojo.jspc</groupId>
+	<artifactId>jspc-maven-plugin</artifactId>
+	<version>2.0.2</version>
+	<executions>
+		<execution>
+		<id>jspc</id>
+		<phase>package</phase>
+		<goals>
+			<goal>compile</goal>
+		</goals>
+		<configuration>									 <inputWebXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</inputWebXml>							<defaultSourcesDirectory>${project.build.directory}/${project.artifactId}-${project.version}</defaultSourcesDirectory>
+		</configuration>
+		</execution>
+	</executions>
+						
+	<dependencies>
+		<dependency>
+			<groupId>org.jasig.mojo.jspc</groupId>
+			<artifactId>jspc-compiler-tomcat8</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+	</dependencies>
+</plugin>
+----
+
+=== jetty JSPC maven plugin config
+
+[source,xml]
+----
+<plugin>
+	<groupId>org.eclipse.jetty</groupId>
+	<artifactId>jetty-jspc-maven-plugin</artifactId>
+	<version>9.3.14.v20161028</version>
+	<executions>
+		<execution>
+		<id>jspc</id>
+		<phase>package</phase>
+		<goals>
+			<goal>jspc</goal>
+		</goals>
+			<configuration>							<webXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</webXml>
+									<webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
+			</configuration>							
+		</execution>
+	</executions>
+     <dependencies>
+      <dependency>
+         <groupId>org.apache.tomcat</groupId>
+         <artifactId>tomcat-jasper</artifactId>
+         <version>${tomcatVersion}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>org.eclipse.jdt.core.compiler</groupId>
+               <artifactId>ecj</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.eclipse.jdt.core.compiler</groupId>
+         <artifactId>ecj</artifactId>
+         <version>${eclipse.jdt.core.compiler.ecj.version}</version>
+      </dependency>
+   </dependencies>
+</plugin>
+----
