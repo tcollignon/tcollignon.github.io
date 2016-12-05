@@ -1,4 +1,456 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Mon, 05 Dec 2016 21:53:01 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Unable to locate site descriptor : maven-site-plugin problem]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Mon, 05 Dec 2016 21:56:39 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[How to compile JSP with Tomcat and Maven faster]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>When I must pre-compile JSP with tomcat, it&#8217;s usually pain because it takes a lot of time.
+Let&#8217;s see How compile this faster.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_compile_jsp">How to compile JSP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If I must compile for tomcat, I usually take this Maven plugin : <a href="https://github.com/leonardehrenfried/jspc-maven-plugin" class="bare">https://github.com/leonardehrenfried/jspc-maven-plugin</a>
+I take this plugin because I think it&#8217;s pretty simple, and it give availabilty to add includes/excludes of jsp.
+This is the Maven config to do the job in my War project (we see that I have a tomcat 8 project) :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
+   &lt;groupId&gt;de.mytoys.maven.plugins&lt;/groupId&gt;
+   &lt;artifactId&gt;jspc-maven-plugin&lt;/artifactId&gt;
+   &lt;version&gt;1.1.0&lt;/version&gt;
+   &lt;configuration&gt;
+      &lt;webAppSourceDirectory&gt;${project.build.directory}/${project.artifactId}-${project.version}&lt;/webAppSourceDirectory&gt;
+      &lt;webXml&gt;${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml&lt;/webXml&gt;
+      &lt;generatedClasses&gt;${project.build.directory}/jspc&lt;/generatedClasses&gt;
+   &lt;/configuration&gt;
+   &lt;dependencies&gt;
+      &lt;dependency&gt;
+         &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+         &lt;artifactId&gt;tomcat-jasper&lt;/artifactId&gt;
+         &lt;version&gt;8.5.4&lt;/version&gt;
+         &lt;exclusions&gt;
+            &lt;exclusion&gt;
+               &lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;
+               &lt;artifactId&gt;ecj&lt;/artifactId&gt;
+            &lt;/exclusion&gt;
+         &lt;/exclusions&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+         &lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;
+         &lt;artifactId&gt;ecj&lt;/artifactId&gt;
+         &lt;version&gt;4.6.1&lt;/version&gt;
+      &lt;/dependency&gt;
+   &lt;/dependencies&gt;
+&lt;/plugin&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_some_problems_of_this_plugin">Some problems of this plugin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If we have many jsp (&gt; 500) the plugin can take lot of time to compile all files. (see the benchmark after)
+The other problem is this plugin will stop and fail at the first jsp who contains error.
+And even at the first error in the jsp! If a jsp contains 5 errors, we must run 5 times the plugin to discover all.
+So if a big project contains multiples errors, we must run may times the plugin and so many times the full compilation of all jsp.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_fix_performance">First fix : performance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to compile a big project faster, I propose different things</p>
+</div>
+<div class="sect2">
+<h3 id="_give_all_jsp_to_jasper_jspc">Give all jsp to Jasper JSPC</h3>
+<div class="paragraph">
+<p>In version 1.1.0 of the plugin, it takes all of the jsp and call execute JSPC for each of them.
+This is the code :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">for (String fileName : jspFiles) {
+	jspc.setJspFiles(fileName);
+	getLog().info("Compiling " + fileName);
+	jspc.execute();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Maybe it&#8217;s an optimization for Tomcat 6.X, but I think with Tomcat 8.X it&#8217;s slower than giving all JSP directly to JSPC.execute();
+See pull request <a href="https://github.com/leonardehrenfried/jspc-maven-plugin/pull/1" class="bare">https://github.com/leonardehrenfried/jspc-maven-plugin/pull/1</a> to fix this.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_execute_compilation_in_parallel">Execute compilation in parallel</h3>
+<div class="paragraph">
+<p>To compile faster we need to compile in parallel.
+Indeed when we launch JavaMissionControl for example, we see the CPU is 20%-30% usage when compiling.
+To increase CPU usage, we need to execute jspc in different thread.
+See pull request <a href="https://github.com/leonardehrenfried/jspc-maven-plugin/pull/2" class="bare">https://github.com/leonardehrenfried/jspc-maven-plugin/pull/2</a> to add this feature.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_benchmark">Benchmark</h3>
+<div class="paragraph">
+<p>I made a little benchmark with two projects : one with 400 jsp and one with 2700 jsp.
+I test this on HP ZBook i7 Windows 7.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>400 jsp</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Time</th>
+<th class="tableblock halign-left valign-top">Java Heap</th>
+<th class="tableblock halign-left valign-top">CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">out of the box 1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.3Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%-30%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Giving all jsp to jspc.execute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30sec</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%-30%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">With 2 threads</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">60%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">With 4 threads</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">90%</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
+<li>
+<p>2700 jsp</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Time</th>
+<th class="tableblock halign-left valign-top">Java Heap</th>
+<th class="tableblock halign-left valign-top">CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">out of the box 1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18min18s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Giving all jsp to jspc.execute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3min43s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">With 2 threads</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2min5s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40%-60%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">With 4 threads</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1min25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_second_fix_stop_at_first_error">Second fix : stop at first error</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To avoid this behavior, I add new parameter : stopAtFirstError (true by default for retro-compatibility).
+Indeed Jasper JSPC provide a parameter "failOnError" wich allow to continue even if error were raised.
+This feature works only if we gave all the jsp to jspc. (see first fix).
+But we need to fail maven build if we have jsp error, but when we call jspc with "failOnError=false", it raise no exception.
+So the only way I found right now is to add a Log handler who tell the Mojo if jspc raise a SEVERE error in his log (this is a little be tricky&#8230;&#8203;).
+If we take multiple threads, this parameter works only if it&#8217;s "false".
+If it&#8217;s true, each thread with stop at first error.
+See pull request <a href="https://github.com/leonardehrenfried/jspc-maven-plugin/pull/2" class="bare">https://github.com/leonardehrenfried/jspc-maven-plugin/pull/2</a> to add this feature.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comparing_to_other_maven_plugins">Comparing to other Maven plugins</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>During this case I search other Maven plugins who compile JSP with Tomcat. It&#8217;s not easy because JSP it&#8217;s very fashionable&#8230;&#8203;
+I found this major ones :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/leonardehrenfried/jspc-maven-plugin" class="bare">https://github.com/leonardehrenfried/jspc-maven-plugin</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>no recent upgrade</p>
+</li>
+<li>
+<p>provide includes/excludes parameters</p>
+</li>
+<li>
+<p>trace all jsp in log when compiling</p>
+</li>
+<li>
+<p>fork of jetty-jspc-maven-plugin</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="https://github.com/Jasig/jspc-maven-plugin" class="bare">https://github.com/Jasig/jspc-maven-plugin</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>1 recent upgrade</p>
+</li>
+<li>
+<p>allow different version of tomcat compiler (by design)</p>
+</li>
+<li>
+<p>fork of the Codehaus jspc-maven-plugin</p>
+</li>
+<li>
+<p>does not provide stopAtFirstError=false for now (but there are current PR for that)</p>
+</li>
+<li>
+<p>does not provide includes/excludes parameters</p>
+</li>
+<li>
+<p>trace all jsp in log when compiling</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>jspc-maven-plugin from codehaus</p>
+<div class="ulist">
+<ul>
+<li>
+<p>no more maintained</p>
+</li>
+<li>
+<p>does not provide stopAtFirstError=false</p>
+</li>
+<li>
+<p>does not provide tomcat 8 compiler (only tomcat 6)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="https://www.eclipse.org/jetty/documentation/current/jetty-jspc-maven-plugin.html" class="bare">https://www.eclipse.org/jetty/documentation/current/jetty-jspc-maven-plugin.html</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>design by and for jetty</p>
+</li>
+<li>
+<p>if we give jasper dependency we can use this for tomcat</p>
+</li>
+<li>
+<p>does not provide stopAtFirstError=false for now</p>
+</li>
+<li>
+<p>trace all jsp in log at startup</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And this is a little benchmark of this plugins with my project (2700 jsp).</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Time</th>
+<th class="tableblock halign-left valign-top">Java Heap</th>
+<th class="tableblock halign-left valign-top">CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">leonardehrenfried/jspc-maven-plugin 1.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18min18s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">leonardehrenfried/jspc-maven-plugin with my PR (4 threads)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1min25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jasig/jspc-maven-plugin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3min22s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.35Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jspc-maven-plugin from codehaus</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not possible because not support tomcat 8</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jetty-jspc-maven-plugin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3min50s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.37Gb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If the wholes PR are accepted, the plugin will be much faster and will permit to not stop at the first error.
+I think this maybe start a "version 2.X" of this plugin because one PR need java 7.
+I think this plugin can give Tomcat 8 by default now (especially if it start 2.X version).
+If you want to use this plugin with this fix and features see this : <a href="https://github.com/leonardehrenfried/jspc-maven-plugin/pull/2" class="bare">https://github.com/leonardehrenfried/jspc-maven-plugin/pull/2</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_annex">Annex</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_jasig_jspc_maven_plugin_config">Jasig JSPC maven plugin config</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
+	&lt;groupId&gt;org.jasig.mojo.jspc&lt;/groupId&gt;
+	&lt;artifactId&gt;jspc-maven-plugin&lt;/artifactId&gt;
+	&lt;version&gt;2.0.2&lt;/version&gt;
+	&lt;executions&gt;
+		&lt;execution&gt;
+		&lt;id&gt;jspc&lt;/id&gt;
+		&lt;phase&gt;package&lt;/phase&gt;
+		&lt;goals&gt;
+			&lt;goal&gt;compile&lt;/goal&gt;
+		&lt;/goals&gt;
+		&lt;configuration&gt;
+        	&lt;inputWebXml&gt;${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml&lt;/inputWebXml&gt;
+            &lt;defaultSourcesDirectory&gt;${project.build.directory}/${project.artifactId}-${project.version}&lt;/defaultSourcesDirectory&gt;
+		&lt;/configuration&gt;
+		&lt;/execution&gt;
+	&lt;/executions&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.jasig.mojo.jspc&lt;/groupId&gt;
+			&lt;artifactId&gt;jspc-compiler-tomcat8&lt;/artifactId&gt;
+			&lt;version&gt;2.0.2&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+&lt;/plugin&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jetty_jspc_maven_plugin_config">jetty JSPC maven plugin config</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
+	&lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
+	&lt;artifactId&gt;jetty-jspc-maven-plugin&lt;/artifactId&gt;
+	&lt;version&gt;9.3.14.v20161028&lt;/version&gt;
+	&lt;executions&gt;
+		&lt;execution&gt;
+		&lt;id&gt;jspc&lt;/id&gt;
+		&lt;phase&gt;package&lt;/phase&gt;
+		&lt;goals&gt;
+			&lt;goal&gt;jspc&lt;/goal&gt;
+		&lt;/goals&gt;
+			&lt;configuration&gt;
+            	&lt;webXml&gt;${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml&lt;/webXml&gt;
+				&lt;webAppSourceDirectory&gt;${project.build.directory}/${project.artifactId}-${project.version}&lt;/webAppSourceDirectory&gt;
+			&lt;/configuration&gt;
+		&lt;/execution&gt;
+	&lt;/executions&gt;
+     &lt;dependencies&gt;
+      &lt;dependency&gt;
+         &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+         &lt;artifactId&gt;tomcat-jasper&lt;/artifactId&gt;
+         &lt;version&gt;${tomcatVersion}&lt;/version&gt;
+         &lt;exclusions&gt;
+            &lt;exclusion&gt;
+               &lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;
+               &lt;artifactId&gt;ecj&lt;/artifactId&gt;
+            &lt;/exclusion&gt;
+         &lt;/exclusions&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+         &lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;
+         &lt;artifactId&gt;ecj&lt;/artifactId&gt;
+         &lt;version&gt;${eclipse.jdt.core.compiler.ecj.version}&lt;/version&gt;
+      &lt;/dependency&gt;
+   &lt;/dependencies&gt;
+&lt;/plugin&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>]]></description><link>https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html</link><guid isPermaLink="true">https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html</guid><category><![CDATA[Tomcat]]></category><category><![CDATA[ JSP]]></category><category><![CDATA[ Maven]]></category><dc:creator><![CDATA[COLLIGNON Thomas]]></dc:creator><pubDate>Sun, 04 Dec 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Unable to locate site descriptor : maven-site-plugin problem]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you run maven-site-plugin in project with inheritance, you may be confronted to this error :</p>
