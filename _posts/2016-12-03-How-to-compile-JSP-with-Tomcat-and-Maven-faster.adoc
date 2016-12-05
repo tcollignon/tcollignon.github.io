@@ -1,4 +1,6 @@
-:hp-tags: Tomcat JSP Maven
+:hp-tags: Tomcat
+:hp-tags: JSP
+:hp-tags: Maven
 
 = How to compile JSP with Tomcat and Maven faster
 
