@@ -9,7 +9,7 @@
     "description": "Blog about Java, Maven, Jenkins and others ",
     "logo": "images/tux.png",
     "cover": "images/mustang.png",
-    "disqus": "thomascollignon"
+    "disqus": "https-tcollignon-github-io"
   },
   "socialnetwork": {
     "email": "tomiphone3G@gmail.com",
