@@ -1,6 +1,5 @@
-:hp-tags: Tomcat
-:hp-tags: JSP
-:hp-tags: Maven
+:hp-tags: Tomcat, JSP, Maven
+:published_at: 2016-12-04
 
 = How to compile JSP with Tomcat and Maven faster
 
