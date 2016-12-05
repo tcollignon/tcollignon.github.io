@@ -9,6 +9,7 @@
     "description": "Blog about Java, Maven, Jenkins and others ",
     "logo": "images/tux.png",
     "cover": "images/mustang.png",
+    "googleAnalytics": "UA-88524010-1",
     "disqus": "https-tcollignon-github-io"
   },
   "socialnetwork": {
