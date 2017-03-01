@@ -12,7 +12,7 @@
 
     <link rel="shortcut icon" href="https://tcollignon.github.io/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//tcollignon.github.io/themes/casper/assets/css/screen.css?v=1488235094012" />
+    <link rel="stylesheet" type="text/css" href="//tcollignon.github.io/themes/casper/assets/css/screen.css?v=1488353836453" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
     <link rel="canonical" href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html" />
@@ -351,6 +351,85 @@ Everything works good, maven update/compilation/tests/Tomcat launch.</p>
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m</pre>
 </div>
 </div>
+<div class="paragraph">
+<p><em>EDIT</em> : After reading this, <a href="https://twitter.com/rfscholte">@rfscholte</a> said it&#8217;s weird because Jenkins use -B option (Maven batch mode) by default, and in this case ANSI color is not enable, so the output console should be good.</p>
+</div>
+<div class="paragraph">
+<p>So I have test another cases :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins Maven Job</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Output command is :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;===[JENKINS REMOTING CAPACITY]===&gt;channel started
+Executing Maven:  -B -f /data/blabla/pom.xml -s /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml -gs /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml clean install -Dmaven.test.failure.ignore=true -T 4</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And I have  ugly output</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINF[m]</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins Freestyle Job with maven step</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Output command is :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ /opt/apache-maven-3.5.0-alpha-1/bin/mvn -f pom.xml -s /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml -gs /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml clean install -Dmaven.test.failure.ignore=true -T 4</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And in this case output is ok</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins Pipeline</p>
+<div class="literalblock">
+<div class="content">
+<pre>node {
+  checkout(blabla)
+  env.MAVEN_HOME=tool name: 'Maven 3.5.0-alpha-1', type: 'maven'
+  sh 'mvn clean install -B -Dmaven.test.failure.ignore=true -T 4'
+}</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And in this case output is ok too</p>
+</div>
+<div class="paragraph">
+<p><strong>Conclusion</strong> : do not use Jenkins Maven project, or using with <a href="https://wiki.jenkins-ci.org/display/JENKINS/AnsiColor+Plugin">Ansi Color Plugin</a></p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_compile_only_no_tests_no_threading">Compile ONLY (no tests), no Threading</h3>
@@ -447,7 +526,7 @@ Everything works good, maven update/compilation/tests/Tomcat launch.</p>
 
 
             <figure class="author-image">
-                <a class="img" href="https://tcollignon.github.io/author/tcollignon/" style="background-image: url(https://avatars.githubusercontent.com/u/1019783?v&#x3D;3)"><span class="hidden">COLLIGNON Thomas's Picture</span></a>
+                <a class="img" href="https://tcollignon.github.io/author/tcollignon/" style="background-image: url(https://avatars3.githubusercontent.com/u/1019783?v&#x3D;3)"><span class="hidden">COLLIGNON Thomas's Picture</span></a>
             </figure>
 
             <section class="author">
@@ -526,8 +605,8 @@ Everything works good, maven update/compilation/tests/Tomcat launch.</p>
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script type="text/javascript" src="//tcollignon.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1488235094012"></script>
-    <script type="text/javascript" src="//tcollignon.github.io/themes/casper/assets/js/index.js?v=1488235094012"></script>
+    <script type="text/javascript" src="//tcollignon.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1488353836453"></script>
+    <script type="text/javascript" src="//tcollignon.github.io/themes/casper/assets/js/index.js?v=1488353836453"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
