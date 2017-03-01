@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Mon, 27 Feb 2017 22:38:14 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Test Maven 3.5.0-alpha-1]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Wed, 01 Mar 2017 07:37:16 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Test Maven 3.5.0-alpha-1]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A new version of Maven (3.5.0-alpha-1) is currently in Apache [VOTE].</p>
@@ -285,6 +285,85 @@ Everything works good, maven update/compilation/tests/Tomcat launch.</p>
 [[1;34mINFO[m] [1;32mBUILD SUCCESS[m
 [[1;34mINFO[m] [1m------------------------------------------------------------------------[m</pre>
 </div>
+</div>
+<div class="paragraph">
+<p><em>EDIT</em> : After reading this, <a href="https://twitter.com/rfscholte">@rfscholte</a> said it&#8217;s weird because Jenkins use -B option (Maven batch mode) by default, and in this case ANSI color is not enable, so the output console should be good.</p>
+</div>
+<div class="paragraph">
+<p>So I have test another cases :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins Maven Job</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Output command is :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;===[JENKINS REMOTING CAPACITY]===&gt;channel started
+Executing Maven:  -B -f /data/blabla/pom.xml -s /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml -gs /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml clean install -Dmaven.test.failure.ignore=true -T 4</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And I have  ugly output</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINF[m]</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins Freestyle Job with maven step</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Output command is :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ /opt/apache-maven-3.5.0-alpha-1/bin/mvn -f pom.xml -s /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml -gs /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml clean install -Dmaven.test.failure.ignore=true -T 4</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And in this case output is ok</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins Pipeline</p>
+<div class="literalblock">
+<div class="content">
+<pre>node {
+  checkout(blabla)
+  env.MAVEN_HOME=tool name: 'Maven 3.5.0-alpha-1', type: 'maven'
+  sh 'mvn clean install -B -Dmaven.test.failure.ignore=true -T 4'
+}</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And in this case output is ok too</p>
+</div>
+<div class="paragraph">
+<p><strong>Conclusion</strong> : do not use Jenkins Maven project, or using with <a href="https://wiki.jenkins-ci.org/display/JENKINS/AnsiColor+Plugin">Ansi Color Plugin</a></p>
 </div>
 </div>
 <div class="sect2">
