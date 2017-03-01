@@ -155,6 +155,47 @@ _NOTE_: in Jenkins by default the console output is ugly with maven 3.5.0-alpha-
  [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
  [[1;34mINFO[m] [1;32mBUILD SUCCESS[m
  [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+ 
+_EDIT_ : After reading this, https://twitter.com/rfscholte[@rfscholte] said it's weird because Jenkins use -B option (Maven batch mode) by default, and in this case ANSI color is not enable, so the output console should be good.
+
+So I have test another cases : 
+
+* Jenkins Maven Job 
+
+Output command is :
+
+ <===[JENKINS REMOTING CAPACITY]===>channel started
+ Executing Maven:  -B -f /data/blabla/pom.xml -s /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml -gs /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml clean install -Dmaven.test.failure.ignore=true -T 4
+
+And I have  ugly output
+
+ [[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+ [[1;34mINFO[m] [1mReactor Build Order:[m
+ [[1;34mINF[m] 
+ 
+* Jenkins Freestyle Job with maven step
+
+Output command is : 
+
+ $ /opt/apache-maven-3.5.0-alpha-1/bin/mvn -f pom.xml -s /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml -gs /opt/apache-maven-3.5.0-alpha-1/conf/settings.xml clean install -Dmaven.test.failure.ignore=true -T 4
+
+And in this case output is ok
+
+ [INFO] ------------------------------------------------------------------------
+ [INFO] Reactor Build Order:
+ [INFO] 
+ 
+* Jenkins Pipeline
+
+ node {
+   checkout(blabla)
+   env.MAVEN_HOME=tool name: 'Maven 3.5.0-alpha-1', type: 'maven'
+   sh 'mvn clean install -B -Dmaven.test.failure.ignore=true -T 4'
+ }
+ 
+And in this case output is ok too
+
+*Conclusion* : do not use Jenkins Maven project, or using with https://wiki.jenkins-ci.org/display/JENKINS/AnsiColor+Plugin[Ansi Color Plugin]
 
 === Compile ONLY (no tests), no Threading
 
