@@ -4,7 +4,7 @@
 = How-To Use third party libraries in Jenkins Pipeline
 
 https://jenkins.io/doc/book/pipeline/[Jenkins Pipeline] has so many features and this new way of using Jenkins it's very powerfull.
-I use a lot of pipeline, and in some case I need to use a third pary jar. There a many options to do that, let's see!
+I use a lot of pipeline, and in some case I need to use a third party jar. There a many options to do that, let's see!
 
 == The use case
 My principal use case is establish a JDBC connection in Jenkins Pipeline. To do this I need the JDBC driver in the system classloader. By default it's not the case obviously.
