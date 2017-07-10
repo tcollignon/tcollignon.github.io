@@ -114,3 +114,21 @@ I try it, but actually Jenkins does not support this solution and raise this err
 	at groovy.grape.GrapeIvy$chooseClassLoader.callCurrent(Unknown Source)
 	at groovy.grape.GrapeIvy.grab(GrapeIvy.groovy:249)
 	at groovy.grape.Grape.grab(Grape.java:167)
+
+So another solution is to register the driver before instantiating the connection, thanks to https://twitter.com/GroGro57[@GroGro57] for his help.
+This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.
+
+=== Final Code
+In the end the pipeline code will be :
+
+[source,groovy]
+----
+	@Grab('com.oracle:ojdbc6:11.2.0.4')
+	import groovy.sql.Sql;
+    import java.sql.DriverManager;
+    
+    DriverManager.registerDriver(new oracle.jdbc.OracleDriver())
+    def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
+    sql.execute 'select 1 from dual'
+    sql.close()
+----
