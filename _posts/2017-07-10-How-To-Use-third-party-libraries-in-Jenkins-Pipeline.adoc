@@ -29,4 +29,34 @@ In my first implementation, I wrote this groovy code to do the job :
 In this solution there is half the code that is technical. It is not very readable and understandable, but it works.
 
 == New way : Groovy Grab
+Thanks to https://twitter.com/aheritier[@aheritier] I found that we can use http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start[Groovy Grab] in Jenkins to https://jenkins.io/doc/book/pipeline/shared-libraries/#using-third-party-libraries[add third pary libraries].
+At first glance this can be a very good way to achieve this use case.
+The new code could be this : 
+
+[source,groovy]
+----
+	@Grab('com.oracle:ojdbc6:11.2.0.4')
+	import groovy.sql.Sql;
+    
+    def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
+    sql.execute 'select 1 from dual'
+    sql.close()
+----
+
+This is better than the first one : less code, no more technical code, more readable.
+But in fact it doesn't work. At least in my case.
+Let see why.
+
+=== 1st problem : Get Jar
+http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start[Groovy Grab] use http://ant.apache.org/ivy/[Ivy] to manage the recovery of jars.
+By default it get jars from https://search.maven.org/[maven central].
+If you are familiar with this repo, you know that Oracle Driver will not be present. Of course it commercial part etc...
+So the previous don't work and we get this kind of error :
+
+org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+General error during conversion: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
+
+java.lang.RuntimeException: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+
 
