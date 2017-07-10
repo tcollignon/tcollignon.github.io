@@ -1,4 +1,188 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Wed, 01 Mar 2017 07:40:27 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Test Maven 3.5.0-alpha-1]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Mon, 10 Jul 2017 20:29:51 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[How-To Use third party libraries in Jenkins Pipeline]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://jenkins.io/doc/book/pipeline/">Jenkins Pipeline</a> has so many features and this new way of using Jenkins it&#8217;s very powerfull.
+I use a lot of pipeline, and in some case I need to use a third pary jar. There a many options to do that, let&#8217;s see!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_use_case">The use case</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>My principal use case is establish a JDBC connection in Jenkins Pipeline. To do this I need the JDBC driver in the system classloader. By default it&#8217;s not the case obviously.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_old_way_with_groovy">Old way with Groovy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In my first implementation, I wrote this groovy code to do the job :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">	import groovy.sql.Sql;
+
+ 	def classLoader = ClassLoader.systemClassLoader
+    while (classLoader.parent) {
+        classLoader = classLoader.parent
+    }
+    classLoader.addURL(new File("/opt/oracle/product/11.2.0/client/jdbc/lib/ojdbc6.jar").toURL())
+    def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
+    sql.execute 'select 1 from dual'
+    sql.close()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this solution there is half the code that is technical. It is not very readable and understandable, but it works.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_new_way_groovy_grab">New way : Groovy Grab</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Thanks to <a href="https://twitter.com/aheritier">@aheritier</a> I found that we can use <a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start">Groovy Grab</a> in Jenkins to <a href="https://jenkins.io/doc/book/pipeline/shared-libraries/#using-third-party-libraries">add third pary libraries</a>.
+At first glance this can be a very good way to achieve this use case.
+The new code could be this :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">	@Grab('com.oracle:ojdbc6:11.2.0.4')
+	import groovy.sql.Sql;
+
+    def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
+    sql.execute 'select 1 from dual'
+    sql.close()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is better than the first one : less code, no more technical code, more readable.
+But in fact it doesn&#8217;t work. At least in my case.
+Let see why.</p>
+</div>
+<div class="sect2">
+<h3 id="_1st_problem_get_jar">1st problem : Get Jar</h3>
+<div class="paragraph">
+<p><a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start">Groovy Grab</a> use <a href="http://ant.apache.org/ivy/">Ivy</a> to manage the recovery of jars.
+You need to add <a href="https://wiki.jenkins.io/display/JENKINS/Pipeline+Shared+Groovy+Libraries+Plugin">Shared Groovy Libraries Plugin</a>.
+By default it get jars from <a href="https://search.maven.org/">maven central</a>.
+If you are familiar with this repo, you know that Oracle Driver will not be present. Of course it commercial part etc&#8230;&#8203;
+So the previous code doesn&#8217;t work and we get this kind of error :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+General error during conversion: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
+java.lang.RuntimeException: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
+at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are other problem if Maven central is not accessible, like in enterprise with http proxy for example.
+If you have a binary repository like <a href="https://www.jfrog.com/artifactory/">artifactory</a>, you must add a Ivy configuration to let Grab get jar from this repository.
+To do this add a <em>grapeConfig.xml</em> in your jenkins MASTER installation, in the $JENKINS_HOME/.groovy directory.
+You can generate Ivy config from the artifactory instance.
+An example can be :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;ivy-settings
+  &lt;settings defaultResolver="downloadGrapes" /&gt;
+  &lt;credentials host="artifactoryHostname" realm="Artifactory Realm" username="user" passwd="password" /&gt;
+  &lt;resolvers&gt;
+    &lt;chain name="downloadGrapes"&gt;
+      &lt;ibiblio name="public" m2compatible="true" root="http://artifactoryHostname/artifactory/libs-release" /&gt;
+    &lt;/chain&gt;
+  &lt;/resolvers&gt;
+&lt;/ivy-settings&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You need to restart Jenkins MASTER to load new _grapeConfig.xml" file.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With this config, the jars we be downloading correctly and will be in the grape cache under $JENKINS_HOME/.groovy/grapes directory.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2nd_problem_jdbc">2nd problem : JDBC</h3>
+<div class="paragraph">
+<p>Now we have a good configuration of Grape (and Ivy) in Jenkins, but this example still does not work.
+The new error is :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>java.sql.SQLException: No suitable driver found for jdbc:oracle:thin:@SERVER:2483/INSTANCE
+at java.sql.DriverManager.getConnection(DriverManager.java:689)
+at java.sql.DriverManager.getConnection(DriverManager.java:247)
+at groovy.sql.Sql.newInstance(Sql.java:402)
+at groovy.sql.Sql.newInstance(Sql.java:446)
+at groovy.sql.Sql$newInstance.call(Unknown Source)
+at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+at com.cloudbees.groovy.cps.sandbox.DefaultInvoker.methodCall(DefaultInvoker.java:18)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The problem is JDBC itself, it need to be loading by the system classloader to work correctly.
+First idea : <a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#Grape-JDBCDrivers">@GrabConfig(systemClassLoader=true)</a>. It&#8217;s the Groovy way to deal with JDBC driver.
+I try it, but actually Jenkins does not support this solution and raise this error :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+General error during conversion: No suitable ClassLoader found for grab
+java.lang.RuntimeException: No suitable ClassLoader found for grab
+at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:83)
+at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:105)
+at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:247)
+at groovy.grape.GrapeIvy.chooseClassLoader(GrapeIvy.groovy:182)
+at groovy.grape.GrapeIvy$chooseClassLoader.callCurrent(Unknown Source)
+at groovy.grape.GrapeIvy.grab(GrapeIvy.groovy:249)
+at groovy.grape.Grape.grab(Grape.java:167)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> for his help.
+This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_final_code">Final Code</h3>
+<div class="paragraph">
+<p>In the end the pipeline code will be :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">	@Grab('com.oracle:ojdbc6:11.2.0.4')
+	import groovy.sql.Sql;
+    import java.sql.DriverManager;
+
+    DriverManager.registerDriver(new oracle.jdbc.OracleDriver())
+    def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
+    sql.execute 'select 1 from dual'
+    sql.close()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>]]></description><link>https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html</link><guid isPermaLink="true">https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html</guid><category><![CDATA[Jenkins]]></category><category><![CDATA[ Groovy]]></category><dc:creator><![CDATA[COLLIGNON Thomas]]></dc:creator><pubDate>Mon, 10 Jul 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Test Maven 3.5.0-alpha-1]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A new version of Maven (3.5.0-alpha-1) is currently in Apache [VOTE].</p>
