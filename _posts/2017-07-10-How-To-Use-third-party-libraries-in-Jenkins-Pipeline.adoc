@@ -25,3 +25,8 @@ In my first implementation, I wrote this groovy code to do the job :
     sql.execute 'select 1 from dual'
     sql.close()
 ----
+
+In this solution there is half the code that is technical. It is not very readable and understandable, but it works.
+
+== New way : Groovy Grab
+
