@@ -49,14 +49,35 @@ Let see why.
 
 === 1st problem : Get Jar
 http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start[Groovy Grab] use http://ant.apache.org/ivy/[Ivy] to manage the recovery of jars.
+You need to add https://wiki.jenkins.io/display/JENKINS/Pipeline+Shared+Groovy+Libraries+Plugin[Shared Groovy Libraries Plugin].
 By default it get jars from https://search.maven.org/[maven central].
 If you are familiar with this repo, you know that Oracle Driver will not be present. Of course it commercial part etc...
-So the previous don't work and we get this kind of error :
+So the previous code doesn't work and we get this kind of error :
 
-org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
-General error during conversion: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
+ org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+ General error during conversion: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
 
-java.lang.RuntimeException: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
+ java.lang.RuntimeException: Error grabbing Grapes -- [unresolved dependency: com.oracle#ojdbc6;11.2.0.4: not found]
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
 
+There are other problem if Maven central is not accessible, like in enterprise with http proxy for example.
+If you have a binary repository like https://www.jfrog.com/artifactory/[artifactory], you must add a Ivy configuration to let Grab get jar from this repository.
+To do this add a _grapeConfig.xml_ in your jenkins MASTER installation, in the $JENKINS_HOME/.groovy directory.
+You can generate Ivy config from the artifactory instance.
+An example can be : 
 
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-settings>
+  <settings defaultResolver="downloadGrapes" />
+  <credentials host="artifactoryHostname" realm="Artifactory Realm" username="user" passwd="password" />
+  <resolvers>
+    <chain name="downloadGrapes">
+      <ibiblio name="public" m2compatible="true" root="http://artifactoryHostname/artifactory/libs-release" />
+    </chain>
+  </resolvers>
+</ivy-settings>
+----
+
+WARNING: You need to restart Jenkins MASTER to load new _grapeConfig.xml" file.
