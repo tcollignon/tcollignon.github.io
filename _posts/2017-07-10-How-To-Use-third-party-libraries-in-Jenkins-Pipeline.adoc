@@ -1,15 +1,15 @@
 :hp-tags: Jenkins, Groovy
 :published_at: 2017-07-10
 
-= How-To Use third party libraries in Jenkins Pipeline =
+= How-To Use third party libraries in Jenkins Pipeline
 
 https://jenkins.io/doc/book/pipeline/[Jenkins Pipeline] has so many features and this new way of using Jenkins it's very powerfull.
 I use a lot of pipeline, and in some case I need to use a third pary jar. There a many options to do that, let's see!
 
-== The use case ==
+== The use case
 My principal use case is establish a JDBC connection in Jenkins Pipeline. To do this I need the JDBC driver in the system classloader. By default it's not the case obviously.
 
-== Old way with Groovy ==
+== Old way with Groovy
 In my first implementation, I wrote this groovy code to do the job : 
 
 [source,groovy]
