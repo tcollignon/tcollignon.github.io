@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <title>TCO Blog</title>
-    <meta name="description" content="" />
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="shortcut icon" href="https://tcollignon.github.io/favicon.ico">
-
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:400,700,400italic,700italic|Open+Sans:400italic,700italic,700,400">
-    <link rel="stylesheet" type="text/css" href="//tcollignon.github.io/themes/roon/assets/css/screen.css?v=1499752190465" />
-
+    <title>TCO Blog</title>
+    <meta name="description" content="" />
+    <link href="//fonts.googleapis.com/css?family=Noto+Sans:300,400,700" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="//tcollignon.github.io/themes/saga/assets/css/style.css?v=1499752262375" rel="stylesheet" type="text/css">
+    <link href="//tcollignon.github.io/themes/saga/assets/css/animate.min.css?v=1499752262375" rel="stylesheet" type="text/css">
+    <link href="https://tcollignon.github.io/favicon.ico" rel="shortcut icon">
     <link rel="canonical" href="https://tcollignon.github.io/" />
     <meta name="referrer" content="origin" />
     
@@ -33,179 +32,127 @@ null
     <meta name="generator" content="HubPress" />
     <link rel="alternate" type="application/rss+xml" title="TCO Blog" href="https://tcollignon.github.io/rss/" />
 </head>
-<body class="home-template  ">
-
-    
-<header role="banner">
-    <div class="wrap">
-        <h1><a href="https://tcollignon.github.io">TCO Blog</a></h1>
-        <hr>
+<body class="home-template">
+    <header id="header">
+    <div class="header-background">
+    <section class="blog-content animated fadeIn">
+        <a id="site-url" class="blog-title" href="https://tcollignon.github.io">TCO Blog</a>
+        <span class="blog-description">Blog about Java, Maven, Jenkins and others </span>
+        <nav class="links fadeIn animated">
+            <ul>
+                <li class="rss"><a title="RSS Feed" href="/rss/"><i class="fa fa-fw fa-rss-square"></i></a></li>
+                <li class="github"><a title="GitHub" href="tcollignon"><i class="fa fa-fw fa-github-square"></i></a></li>
+                <li class="twitter"><a title="Twitter" href="@collignont"><i class="fa fa-fw fa-twitter-square"></i></a></li>
+                <li class="linkedin"><a title="LinkedIn" href="https://fr.linkedin.com/in/thomas-collignon-707224121"><i class="fa fa-fw fa-linkedin-square"></i></a></li>
+                <li class="email"><a title="Email" href="mailto:tomiphone3G@gmail.com"><i class="fa fa-fw fa-envelope-o"></i></a></li>
+        
+            </ul>
+        </nav>
+    </section>
     </div>
 </header>
-
-
-<article class="post tag-Jenkins tag-Groovy ">
-
-
-    <div class="meta">
-        <time datetime="2017-07-10"><a href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html">July 10, 2017</a></time>
-    </div>
-
-    <header>
-        <h1><a href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html">How-To Use third party libraries in Jenkins Pipeline</a></h1>
-    </header>
-
-    <div class="text">
-        <p>Jenkins Pipeline has so many features and this new way of using Jenkins it&#8217;s very powerfull. I use a lot of pipeline, and in some case I need to use a third party jar. There a many options to do that, let&#8217;</p>
-        <a href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html" class="readmore">Continue Reading</a>
-    </div>
-</article>
-
-<article class="post tag-Maven ">
-
-
-    <div class="meta">
-        <time datetime="2017-02-27"><a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html">February 27, 2017</a></time>
-    </div>
-
-    <header>
-        <h1><a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html">Test Maven 3.5.0-alpha-1</a></h1>
-    </header>
-
-    <div class="text">
-        <p>A new version of Maven (3.5.0-alpha-1) is currently in Apache [VOTE]. Binaries can be found here : https://repository.apache.org/content/repositories/maven-1324/org/apache/maven/apache-maven/3.5.0-alpha-1/ This is the result of my tests with this version. Configurations MacOsX Dev</p>
-        <a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html" class="readmore">Continue Reading</a>
-    </div>
-</article>
-
-<article class="post tag-Tomcat tag-JSP tag-Maven ">
-
-
-    <div class="meta">
-        <time datetime="2016-12-04"><a href="https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html">December 04, 2016</a></time>
-    </div>
-
-    <header>
-        <h1><a href="https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html">How to compile JSP with Tomcat and Maven faster</a></h1>
-    </header>
-
-    <div class="text">
-        <p>When I must pre-compile JSP with tomcat, it&#8217;s usually pain because it takes a lot of time. Let&#8217;s see How compile this faster. How to compile JSP If I must compile for tomcat, I usually take this Maven plugin : https://github.</p>
-        <a href="https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html" class="readmore">Continue Reading</a>
-    </div>
-</article>
-
-<article class="post tag-Maven ">
-
-
-    <div class="meta">
-        <time datetime="2016-10-24"><a href="https://tcollignon.github.io/2016/10/24/Unable-to-locate-site-descriptor-maven-site-plugin-problem.html">October 24, 2016</a></time>
-    </div>
-
-    <header>
-        <h1><a href="https://tcollignon.github.io/2016/10/24/Unable-to-locate-site-descriptor-maven-site-plugin-problem.html">Unable to locate site descriptor : maven-site-plugin problem</a></h1>
-    </header>
-
-    <div class="text">
-        <p>If you run maven-site-plugin in project with inheritance, you may be confronted to this error : [ERROR] Failed to execute goal org.apache.maven.plugins:maven-site-plugin:3.4:site (default-site) on project XXXXX: SiteToolException: The site descriptor cannot be resolved from the repository: ArtifactResolutionExcep</p>
-        <a href="https://tcollignon.github.io/2016/10/24/Unable-to-locate-site-descriptor-maven-site-plugin-problem.html" class="readmore">Continue Reading</a>
-    </div>
-</article>
-
-<article class="post tag-Tomcat ">
-
-
-    <div class="meta">
-        <time datetime="2016-02-09"><a href="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html">February 09, 2016</a></time>
-    </div>
-
-    <header>
-        <h1><a href="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html">Accelerate tomcat 7/8 start-up</a></h1>
-    </header>
-
-    <div class="text">
-        <p>As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some parameter to the out-of-the-box version. This table show How-To accomplished each case in Tomcat 7 or Tomcat 8 : Tomcat 7</p>
-        <a href="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html" class="readmore">Continue Reading</a>
-    </div>
-</article>
-
-<article class="post tag-Tomcat ">
-
-
-    <div class="meta">
-        <time datetime="2015-05-08"><a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html">May 08, 2015</a></time>
-    </div>
-
-    <header>
-        <h1><a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html">How-to use tomcat 8 Resources to setup web application</a></h1>
-    </header>
-
-    <div class="text">
-        <p>This mecanism allow user to start webapp in tomcat 8 without packaging (like WAR). This is interesting in development, to run application as fast as possible. In Tomcat 6x, 7x this is called Virtual Web App, in Tomcat 8x there is a new way to</p>
-        <a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html" class="readmore">Continue Reading</a>
-    </div>
-</article>
-
-<nav class="pagination" role="navigation">
-    <span class="page-number">Page 1 of 1</span>
-</nav>
-
-
-<footer role="contentinfo">
-    <div class="inner">
-        <div class="vcard">
-            <a href="https://tcollignon.github.io/rss" id="btn_feed" class="btn" title="Feed" target="_blank">
-                <span aria-hidden="true" data-icon=")"></span>
-                <strong>Feed</strong>
-            </a>
-
-            <a href="https://tcollignon.github.io" class="photo circle">
-                <span style="background-image: url('images/tux.png');">
-                    <img src="images/tux.png" alt="TCO Blog">
+<main id="main" class="archive">
+    <section id="feed" class="feed">
+        <article class="post tag-Jenkins tag-Groovy" style="opacity: 0;">
+    
+            <h2 class="post-title"><a href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html">How-To Use third party libraries in Jenkins Pipeline</a></h2>
+            <section class="post-content">
+                Jenkins Pipeline has so many features and this new way of using Jenkins it&#8217;s very powerfull. I use a lot of pipeline, and…
+            </section>
+            <section class="post-meta">
+                <span class="date"><i class="fa fa-clock-o"></i> <a href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html"><time class="timesince" data-timesince="1499637600" datetime="2017-07-10T00:00" title="10 July 2017">a day ago</time></a></span>
+                <span class="author"><i class="fa fa-user"></i> <a href="/">COLLIGNON Thomas</a></span>
+                <span class="tags"><i class="fa fa-tags"></i>
+                    <span>
+                    <a href="https://tcollignon.github.io/tag/Jenkins/">Jenkins</a>, <a href="https://tcollignon.github.io/tag/Groovy/"> Groovy</a></span>
                 </span>
-            </a>
-
-            <div class="details">
-                <h4><a href="https://tcollignon.github.io" class="url n">TCO Blog</a></h4>
-                <a href="https://tcollignon.github.io" class="js-remove-domain-schema">https://tcollignon.github.io</a><br>
-                <span>Published with <a href="http://hubpress.io">HubPress</a></span>
-            </div>
-        </div>
-        <div id="user_bio">
-            <div class="inner">
-                Blog about Java, Maven, Jenkins and others 
-            </div>
-        </div>
-    </div>
-</footer>
-
-
-        <a href="https://tcollignon.github.io" id="blog_badge">
-            <span style="background-image: url('images/tux.png');">TCO Blog</span>
-        </a>
-
-
-    <script>
-
-
-        function no_schema_links () {
-            var links = document.querySelectorAll('.js-remove-domain-schema');
-            if (links) {
-                for (i = 0; i < links.length; ++i) {
-                    var link = links[i],
-                        text = link.innerHTML,
-                        no_schema = text.replace(/.*?:\/\//g, "");
-                    link.innerHTML = no_schema;
-                }
-            }
-        }
-
-        window.onload = function () {
-            no_schema_links();
-
-        }
-    </script>
-
+            </section>
+        </article>    <article class="post tag-Maven" style="opacity: 0;">
+    
+            <h2 class="post-title"><a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html">Test Maven 3.5.0-alpha-1</a></h2>
+            <section class="post-content">
+                A new version of Maven (3.5.0-alpha-1) is currently in Apache [VOTE]. Binaries can be found here : https://repository.apache.org/content/repositories/maven-1324/…
+            </section>
+            <section class="post-meta">
+                <span class="date"><i class="fa fa-clock-o"></i> <a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html"><time class="timesince" data-timesince="1488150000" datetime="2017-02-27T00:00" title="27 February 2017">4 months ago</time></a></span>
+                <span class="author"><i class="fa fa-user"></i> <a href="/">COLLIGNON Thomas</a></span>
+                <span class="tags"><i class="fa fa-tags"></i>
+                    <span>
+                    <a href="https://tcollignon.github.io/tag/Maven/">Maven</a></span>
+                </span>
+            </section>
+        </article>    <article class="post tag-Tomcat tag-JSP tag-Maven" style="opacity: 0;">
+    
+            <h2 class="post-title"><a href="https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html">How to compile JSP with Tomcat and Maven faster</a></h2>
+            <section class="post-content">
+                When I must pre-compile JSP with tomcat, it&#8217;s usually pain because it takes a lot of time. Let&#8217;s see How compile…
+            </section>
+            <section class="post-meta">
+                <span class="date"><i class="fa fa-clock-o"></i> <a href="https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html"><time class="timesince" data-timesince="1480806000" datetime="2016-12-04T00:00" title="4 December 2016">7 months ago</time></a></span>
+                <span class="author"><i class="fa fa-user"></i> <a href="/">COLLIGNON Thomas</a></span>
+                <span class="tags"><i class="fa fa-tags"></i>
+                    <span>
+                    <a href="https://tcollignon.github.io/tag/Tomcat/">Tomcat</a>, <a href="https://tcollignon.github.io/tag/JSP/"> JSP</a>, <a href="https://tcollignon.github.io/tag/Maven/"> Maven</a></span>
+                </span>
+            </section>
+        </article>    <article class="post tag-Maven" style="opacity: 0;">
+    
+            <h2 class="post-title"><a href="https://tcollignon.github.io/2016/10/24/Unable-to-locate-site-descriptor-maven-site-plugin-problem.html">Unable to locate site descriptor : maven-site-plugin problem</a></h2>
+            <section class="post-content">
+                If you run maven-site-plugin in project with inheritance, you may be confronted to this error : [ERROR] Failed to execute goal org.apache.maven.plugins:maven-site-plugin:…
+            </section>
+            <section class="post-meta">
+                <span class="date"><i class="fa fa-clock-o"></i> <a href="https://tcollignon.github.io/2016/10/24/Unable-to-locate-site-descriptor-maven-site-plugin-problem.html"><time class="timesince" data-timesince="1477260000" datetime="2016-10-24T00:00" title="24 October 2016">9 months ago</time></a></span>
+                <span class="author"><i class="fa fa-user"></i> <a href="/">COLLIGNON Thomas</a></span>
+                <span class="tags"><i class="fa fa-tags"></i>
+                    <span>
+                    <a href="https://tcollignon.github.io/tag/Maven/">Maven</a></span>
+                </span>
+            </section>
+        </article>    <article class="post tag-Tomcat" style="opacity: 0;">
+    
+            <h2 class="post-title"><a href="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html">Accelerate tomcat 7/8 start-up</a></h2>
+            <section class="post-content">
+                As it mentionned in this excellent article : https://wiki.apache.org/tomcat/HowTo/FasterStartUp, tomcat will be very faster to start-up if you add some…
+            </section>
+            <section class="post-meta">
+                <span class="date"><i class="fa fa-clock-o"></i> <a href="https://tcollignon.github.io/2016/02/09/Accelerate-tomcat-78-start-up.html"><time class="timesince" data-timesince="1454972400" datetime="2016-02-09T00:00" title="9 February 2016">a year ago</time></a></span>
+                <span class="author"><i class="fa fa-user"></i> <a href="/">COLLIGNON Thomas</a></span>
+                <span class="tags"><i class="fa fa-tags"></i>
+                    <span>
+                    <a href="https://tcollignon.github.io/tag/Tomcat/">Tomcat</a></span>
+                </span>
+            </section>
+        </article>    <article class="post tag-Tomcat" style="opacity: 0;">
+    
+            <h2 class="post-title"><a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html">How-to use tomcat 8 Resources to setup web application</a></h2>
+            <section class="post-content">
+                This mecanism allow user to start webapp in tomcat 8 without packaging (like WAR). This is interesting in development, to run application as fast as…
+            </section>
+            <section class="post-meta">
+                <span class="date"><i class="fa fa-clock-o"></i> <a href="https://tcollignon.github.io/2015/05/08/How-to-use-tomcat-8-Resources-to-setup-web-application.html"><time class="timesince" data-timesince="1431036000" datetime="2015-05-08T00:00" title="8 May 2015">2 years ago</time></a></span>
+                <span class="author"><i class="fa fa-user"></i> <a href="/">COLLIGNON Thomas</a></span>
+                <span class="tags"><i class="fa fa-tags"></i>
+                    <span>
+                    <a href="https://tcollignon.github.io/tag/Tomcat/">Tomcat</a></span>
+                </span>
+            </section>
+        </article></section>
+    <nav class="pagination" role="navigation">
+        <span class="page-number">Page 1 of 1</span>
+    </nav>
+</main>
+    <footer class="animated fadeIn" id="footer">
+        <section class="colophon">
+          <section class="copyright">Copyright &copy; <span itemprop="copyrightHolder">TCO Blog</span>. <span rel="license">All Rights Reserved</span>.</section>
+          <section class="poweredby">Published with <a class="icon-ghost" href="http://hubpress.io">HubPress</a></section>
+        </section>
+        <section class="bottom">
+          <section class="attribution">
+            <a href="http://github.com/Reedyn/Saga">Built with <i class="fa fa-heart"></i> and Free and Open-Source Software</a>.
+          </section>
+        </section>
+    </footer>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
       <script type="text/javascript">
         jQuery( document ).ready(function() {
@@ -218,9 +165,8 @@ null
 
         hljs.initHighlightingOnLoad();
       </script>
-
-
-
+    <script src="//tcollignon.github.io/themes/saga/assets/js/scripts.js?v=1499752262375"></script>
+    
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -231,6 +177,5 @@ null
     ga('send', 'pageview');
 
     </script>
-
 </body>
 </html>
