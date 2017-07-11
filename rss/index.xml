@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Tue, 11 Jul 2017 05:35:29 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[How-To Use third party libraries in Jenkins Pipeline]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Tue, 11 Jul 2017 05:46:20 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[How-To Use third party libraries in Jenkins Pipeline]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://jenkins.io/doc/book/pipeline/">Jenkins Pipeline</a> has so many features and this new way of using Jenkins it&#8217;s very powerfull.
@@ -136,8 +136,13 @@ at com.cloudbees.groovy.cps.sandbox.DefaultInvoker.methodCall(DefaultInvoker.jav
 </div>
 </div>
 <div class="paragraph">
-<p>The problem is JDBC itself, it need to be loading by the system classloader to work correctly.
-First idea : <a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#Grape-JDBCDrivers">@GrabConfig(systemClassLoader=true)</a>. It&#8217;s the Groovy way to deal with JDBC driver.
+<p>The problem is JDBC itself, it need to be loading by the system classloader to work correctly.</p>
+</div>
+<div class="paragraph">
+<p>First idea : <a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#Grape-JDBCDrivers">@GrabConfig(systemClassLoader=true)</a>.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s the Groovy way to deal with JDBC driver.
 I try it, but actually Jenkins does not support this solution and raise this error :</p>
 </div>
 <div class="literalblock">
@@ -159,7 +164,7 @@ at groovy.grape.Grape.grab(Grape.java:167)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> for his help.
+<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> and <a href="https://twitter.com/evildethow">@evildethow</a> for their help.
 This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.</p>
 </div>
 </div>
