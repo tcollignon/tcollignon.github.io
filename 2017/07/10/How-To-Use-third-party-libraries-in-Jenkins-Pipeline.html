@@ -38,9 +38,9 @@
     <link href="//fonts.googleapis.com/" rel="dns-prefetch">
     <link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400&subset=latin,latin-ext" rel="stylesheet">
 
-    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/main.min.css?v=1499751329103"/>
-    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/custom.css?v=1499751329103"/>
-    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/asciidoctor-foundation.css?v=1499751329103"/>
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/main.min.css?v=1499751980424"/>
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/custom.css?v=1499751980424"/>
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/asciidoctor-foundation.css?v=1499751980424"/>
 
 
 
@@ -70,7 +70,7 @@
       GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
     </script>
 
-    <script src="//tcollignon.github.io/themes/ghostium/assets/js/head-scripts.min.js?v=1499751329103"></script>
+    <script src="//tcollignon.github.io/themes/ghostium/assets/js/head-scripts.min.js?v=1499751980424"></script>
 
     <link rel="canonical" href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html" />
     <meta name="referrer" content="origin" />
@@ -330,8 +330,13 @@ at com.cloudbees.groovy.cps.sandbox.DefaultInvoker.methodCall(DefaultInvoker.jav
 </div>
 </div>
 <div class="paragraph">
-<p>The problem is JDBC itself, it need to be loading by the system classloader to work correctly.
-First idea : <a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#Grape-JDBCDrivers">@GrabConfig(systemClassLoader=true)</a>. It&#8217;s the Groovy way to deal with JDBC driver.
+<p>The problem is JDBC itself, it need to be loading by the system classloader to work correctly.</p>
+</div>
+<div class="paragraph">
+<p>First idea : <a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#Grape-JDBCDrivers">@GrabConfig(systemClassLoader=true)</a>.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s the Groovy way to deal with JDBC driver.
 I try it, but actually Jenkins does not support this solution and raise this error :</p>
 </div>
 <div class="literalblock">
@@ -353,7 +358,7 @@ at groovy.grape.Grape.grab(Grape.java:167)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> for his help.
+<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> and <a href="https://twitter.com/evildethow">@evildethow</a> for their help.
 This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.</p>
 </div>
 </div>
@@ -456,7 +461,7 @@ This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be a
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script src="//tcollignon.github.io/themes/ghostium/assets/js/foot-scripts.min.js?v=1499751329103"></script>
+    <script src="//tcollignon.github.io/themes/ghostium/assets/js/foot-scripts.min.js?v=1499751980424"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
