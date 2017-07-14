@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Tue, 11 Jul 2017 07:24:47 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[How-To Use third party libraries in Jenkins Pipeline]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Fri, 14 Jul 2017 16:21:23 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[How-To Use third party libraries in Jenkins Pipeline]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://jenkins.io/doc/book/pipeline/">Jenkins Pipeline</a> has so many features and this new way of using Jenkins it&#8217;s very powerfull.
@@ -67,7 +67,7 @@ Let see why.</p>
 <div class="paragraph">
 <p><a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start">Groovy Grab</a> use <a href="http://ant.apache.org/ivy/">Ivy</a> to manage the recovery of jars.
 You need to add <a href="https://wiki.jenkins.io/display/JENKINS/Pipeline+Shared+Groovy+Libraries+Plugin">Shared Groovy Libraries Plugin</a>.
-By default it get jars from <a href="https://search.maven.org/">maven central</a>.
+By default it get jars from <a href="https://search.maven.org/">maven central</a>, but you can specify other repositories with the annotation @GrabResolver
 If you are familiar with this repo, you know that Oracle Driver will not be present. Of course it commercial part etc&#8230;&#8203;
 So the previous code doesn&#8217;t work and we get this kind of error :</p>
 </div>
@@ -164,7 +164,15 @@ at groovy.grape.Grape.grab(Grape.java:167)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> and <a href="https://twitter.com/evildethow">@evildethow</a> for their help.
+<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> and <a href="https://twitter.com/evildethow">@evildethow</a> for their help.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>DriverManager.registerDriver(new oracle.jdbc.OracleDriver())</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Edit : <a href="https://twitter.com/josepaumard">@JosePaumard</a> give another solution to load the driver, the final code use this one.
 This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.</p>
 </div>
 </div>
@@ -177,9 +185,10 @@ This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be a
 <div class="content">
 <pre class="highlight"><code class="language-groovy" data-lang="groovy">	@Grab('com.oracle:ojdbc6:11.2.0.4')
 	import groovy.sql.Sql;
-    import java.sql.DriverManager;
+    import java.util.ServiceLoader;
+    import java.sql.Driver;
 
-    DriverManager.registerDriver(new oracle.jdbc.OracleDriver())
+    ServiceLoader&lt;Driver&gt; loader = ServiceLoader.load(Driver.class);
     def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
     sql.execute 'select 1 from dual'
     sql.close()</code></pre>
