@@ -38,9 +38,9 @@
     <link href="//fonts.googleapis.com/" rel="dns-prefetch">
     <link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400&subset=latin,latin-ext" rel="stylesheet">
 
-    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/main.min.css?v=1499757887599"/>
-    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/custom.css?v=1499757887599"/>
-    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/asciidoctor-foundation.css?v=1499757887599"/>
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/main.min.css?v=1500049283569"/>
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/custom.css?v=1500049283569"/>
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/asciidoctor-foundation.css?v=1500049283569"/>
 
 
 
@@ -70,7 +70,7 @@
       GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
     </script>
 
-    <script src="//tcollignon.github.io/themes/ghostium/assets/js/head-scripts.min.js?v=1499757887599"></script>
+    <script src="//tcollignon.github.io/themes/ghostium/assets/js/head-scripts.min.js?v=1500049283569"></script>
 
     <link rel="canonical" href="https://tcollignon.github.io/2017/07/10/How-To-Use-third-party-libraries-in-Jenkins-Pipeline.html" />
     <meta name="referrer" content="origin" />
@@ -162,7 +162,7 @@ null
             <ul class="post-meta-list">
               <li class="post-meta-item">
                 <time datetime="2017-07-10" itemprop="datePublished">
-                  a day ago
+                  5 days ago
                 </time>
               </li>
                 <li class="post-meta-item">
@@ -181,7 +181,7 @@ null
           <aside class="post-side">
             <div class="post-author">
                 <a href="https://tcollignon.github.io" class="post-author-avatar">
-                  <img src="https://avatars3.githubusercontent.com/u/1019783?v&#x3D;3" alt="COLLIGNON Thomas">
+                  <img src="https://avatars4.githubusercontent.com/u/1019783?v&#x3D;4" alt="COLLIGNON Thomas">
                 </a>
               <div class="post-author-info">
                 <a href="https://tcollignon.github.io" class="post-author-name">
@@ -261,7 +261,7 @@ Let see why.</p>
 <div class="paragraph">
 <p><a href="http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start">Groovy Grab</a> use <a href="http://ant.apache.org/ivy/">Ivy</a> to manage the recovery of jars.
 You need to add <a href="https://wiki.jenkins.io/display/JENKINS/Pipeline+Shared+Groovy+Libraries+Plugin">Shared Groovy Libraries Plugin</a>.
-By default it get jars from <a href="https://search.maven.org/">maven central</a>.
+By default it get jars from <a href="https://search.maven.org/">maven central</a>, but you can specify other repositories with the annotation @GrabResolver
 If you are familiar with this repo, you know that Oracle Driver will not be present. Of course it commercial part etc&#8230;&#8203;
 So the previous code doesn&#8217;t work and we get this kind of error :</p>
 </div>
@@ -358,7 +358,15 @@ at groovy.grape.Grape.grab(Grape.java:167)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> and <a href="https://twitter.com/evildethow">@evildethow</a> for their help.
+<p>So another solution is to register the driver before instantiating the connection, thanks to <a href="https://twitter.com/GroGro57">@GroGro57</a> and <a href="https://twitter.com/evildethow">@evildethow</a> for their help.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>DriverManager.registerDriver(new oracle.jdbc.OracleDriver())</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Edit : <a href="https://twitter.com/josepaumard">@JosePaumard</a> give another solution to load the driver, the final code use this one.
 This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.</p>
 </div>
 </div>
@@ -371,9 +379,10 @@ This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be a
 <div class="content">
 <pre class="highlight"><code class="language-groovy" data-lang="groovy">	@Grab('com.oracle:ojdbc6:11.2.0.4')
 	import groovy.sql.Sql;
-    import java.sql.DriverManager;
+    import java.util.ServiceLoader;
+    import java.sql.Driver;
 
-    DriverManager.registerDriver(new oracle.jdbc.OracleDriver())
+    ServiceLoader&lt;Driver&gt; loader = ServiceLoader.load(Driver.class);
     def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
     sql.execute 'select 1 from dual'
     sql.close()</code></pre>
@@ -386,7 +395,7 @@ This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be a
           <footer class="post-footer">
             <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
                 <a href="https://tcollignon.github.io" class="post-author-avatar">
-                  <img itemprop="image" src="https://avatars3.githubusercontent.com/u/1019783?v&#x3D;3" alt="COLLIGNON Thomas">
+                  <img itemprop="image" src="https://avatars4.githubusercontent.com/u/1019783?v&#x3D;4" alt="COLLIGNON Thomas">
                 </a>
               <div class="post-author-info">
                 <h4 class="post-footer-heading">Written By</h4>
@@ -461,7 +470,7 @@ This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be a
         hljs.initHighlightingOnLoad();
       </script>
 
-    <script src="//tcollignon.github.io/themes/ghostium/assets/js/foot-scripts.min.js?v=1499757887599"></script>
+    <script src="//tcollignon.github.io/themes/ghostium/assets/js/foot-scripts.min.js?v=1500049283569"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
