@@ -50,7 +50,7 @@ Let see why.
 === 1st problem : Get Jar
 http://docs.groovy-lang.org/latest/html/documentation/grape.html#_quick_start[Groovy Grab] use http://ant.apache.org/ivy/[Ivy] to manage the recovery of jars.
 You need to add https://wiki.jenkins.io/display/JENKINS/Pipeline+Shared+Groovy+Libraries+Plugin[Shared Groovy Libraries Plugin].
-By default it get jars from https://search.maven.org/[maven central].
+By default it get jars from https://search.maven.org/[maven central], but you can specify other repositories with the annotation @GrabResolver
 If you are familiar with this repo, you know that Oracle Driver will not be present. Of course it commercial part etc...
 So the previous code doesn't work and we get this kind of error :
 
@@ -119,6 +119,10 @@ I try it, but actually Jenkins does not support this solution and raise this err
 	at groovy.grape.Grape.grab(Grape.java:167)
 
 So another solution is to register the driver before instantiating the connection, thanks to https://twitter.com/GroGro57[@GroGro57] and https://twitter.com/evildethow[@evildethow] for their help.
+
+ DriverManager.registerDriver(new oracle.jdbc.OracleDriver())
+
+Edit : https://twitter.com/josepaumard[@JosePaumard] give another solution to load the driver, the final code use this one.
 This solution actually works in Jenkins 2.60.1, but I hope @GrabConfig will be added in a future release of the Shared Groovy Plugin.
 
 === Final Code
@@ -128,9 +132,10 @@ In the end the pipeline code will be :
 ----
 	@Grab('com.oracle:ojdbc6:11.2.0.4')
 	import groovy.sql.Sql;
-    import java.sql.DriverManager;
+    import java.util.ServiceLoader;
+    import java.sql.Driver;
     
-    DriverManager.registerDriver(new oracle.jdbc.OracleDriver())
+    ServiceLoader<Driver> loader = ServiceLoader.load(Driver.class);
     def sql = Sql.newInstance('jdbc:oracle:thin:@SERVER:2483/INSTANCE', 'USER', 'PASSWORD', 'oracle.jdbc.OracleDriver')
     sql.execute 'select 1 from dual'
     sql.close()
