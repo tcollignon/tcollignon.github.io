@@ -1,0 +1,129 @@
+:hp-tags: Tomcat, JSP, Maven
+:published_at: 2018-02-19
+
+= How to compile JSP with Tomcat and Maven faster 2.0
+
+I already write a blog post on this topic here : https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html
+Since this, I have proposed some PR to the project https://github.com/leonardehrenfried/jspc-maven-plugin, and now I'm an official commiter.
+So I use this plugin in my work to compile many JSP each day, and I try to always compile faster.
+
+== How to compile JSP
+
+Like I said in my other blog post this is my actual Maven configuration : 
+
+[source,xml]
+----
+<plugin>
+   <groupId>io.leonard.maven.plugins</groupId>
+   <artifactId>jspc-maven-plugin</artifactId>
+   <version>2.4.1</version>
+   <configuration>
+      <webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
+      <webXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</webXml>
+      <generatedClasses>${project.build.directory}/jspc</generatedClasses>
+   </configuration>
+   <dependencies>
+      <dependency>
+         <groupId>org.apache.tomcat</groupId>
+         <artifactId>tomcat-jasper</artifactId>
+         <version>8.5.4</version>
+         <exclusions>
+            <exclusion>
+               <groupId>org.eclipse.jdt.core.compiler</groupId>
+               <artifactId>ecj</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.eclipse.jdt.core.compiler</groupId>
+         <artifactId>ecj</artifactId>
+         <version>4.6.1</version>
+      </dependency>
+   </dependencies>
+</plugin>
+----
+
+Note : I override tomcat-jasper in this configuration in order to use version 8.5.4  (by default it's 8.5.8).
+
+== Giving more threads
+
+We have many jsp (> 500), so the compilation take time. We can increase numbers of parallel thread. Usually i five 4 threads, but for now I want to improve this.
+So I test with 16 threads. But surprise, the global time it's not better than 4. Let's see what happen with Java Mission Control : 
+
+TODO 
+
+== Try to fix synchronization
+
+I want to avoid synchronization phase, so I look at the code. The main problem is the code who call "TODO".
+I try to rewrite part of it to totally avoid calling such a code.
+But some part of code can't be rewriting easylly, so I decided to add a synchronized hash map to add cache mecanism. 
+With this feature I improve synchronized parts, Java Mission Control let me confirm that :
+
+TODO
+
+It's better ! But if we inspect the diagram we see that theres is other synchronization. They are in the core of the compiler. I can't easily add a cache map like this other part of code.
+I think it's too much necessary time to fix this ... So I keep as is, it's still better than at the beggining.
+
+=== Switch compiler class in Maven plugin
+
+To use this improvment with Maven goal, I add a new option call "compilerClass" and I add a new Compiler in the plugin.
+So by default compilerClass=org.apache.jasper.compiler.JDTCompiler, and it's work perfectly with 1 thread, but when we have more than 2 threads it preferable to use the new one "org.apache.jasper.compiler.ParallelJDTCompiler".
+This PR have been merged in version 2.4.3 of the plugin : https://github.com/leonardehrenfried/jspc-maven-plugin/releases/tag/jspc-maven-plugin-2.4.3
+
+[source,xml]
+----
+<plugin>
+   <groupId>io.leonard.maven.plugins</groupId>
+   <artifactId>jspc-maven-plugin</artifactId>
+   <version>2.4.3</version>
+   <configuration>
+      <webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
+      <webXml>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/web.xml</webXml>
+      <generatedClasses>${project.build.directory}/jspc</generatedClasses>
+      <compilerClass>org.apache.jasper.compiler.ParallelJDTCompiler</compilerClass>
+      <threads>4</threads>
+   </configuration>
+</plugin>
+----
+
+=== Benchmark
+
+I made a little benchmark with two projects : one with 400 jsp and one with 2700 jsp.
+I test this on HP ZBook i7 Windows 7.
+
+* 400 jsp
+
+|===
+| |Time
+
+|2 threads compiler by default
+|50s
+
+|2 threads parallel compiler
+|30sec
+
+|4 threads compiler by default
+|21s
+
+|4 threads compiler by default
+|17s
+|===
+
+* 2700 jsp
+
+|===
+| |Time
+
+|2 threads compiler by default
+|50s
+
+|2 threads parallel compiler
+|30sec
+
+|4 threads compiler by default
+|21s
+
+|4 threads compiler by default
+|17s
+|===
+
