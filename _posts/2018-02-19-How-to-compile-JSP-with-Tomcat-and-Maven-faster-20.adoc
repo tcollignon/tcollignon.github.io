@@ -105,7 +105,7 @@ I test this on HP ZBook i7 Windows 7.
 |4 threads compiler by default
 |21s
 
-|4 threads compiler by default
+|4 threads parallel compiler
 |17s
 |===
 
@@ -123,7 +123,7 @@ I test this on HP ZBook i7 Windows 7.
 |4 threads compiler by default
 |21s
 
-|4 threads compiler by default
+|4 threads parallel compiler
 |17s
 |===
 
