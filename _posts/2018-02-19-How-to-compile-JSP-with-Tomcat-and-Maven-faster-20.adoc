@@ -48,7 +48,7 @@ Note : I override tomcat-jasper in this configuration in order to use version 8.
 == Giving more threads
 
 We have many jsp (> 500), so the compilation take time. We can increase numbers of parallel thread. Usually i five 4 threads, but for now I want to improve this.
-So I test with 16 threads. But surprise, the global time it's not better than 4. Let's see what happen with Java Mission Control : 
+So I test with 16 threads. But surprise, the global time it's not better than 4. Let's see what happen with jvisualvm : 
 
 TODO 
 
