@@ -62,9 +62,10 @@ I try to rewrite part of it to totally avoid calling such a code, this is the ca
 But some part of code can't be rewriting easylly, so I decided to add a synchronized hash map to add cache mecanism, this is the case of _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_.
 With this 2 fix I improve synchronized parts, jvisualvm let me confirm that :
 
-TODO
+image::threadsSynchronizedParallelJDTCompiler.PNG[]
 
-It's better ! But if we inspect the diagram we see that theres is other synchronization. They are in the core of the compiler. I can't easily add a cache map like this other part of code.
+It's better ! We see that at the beggining there is a lot of syncrhonization, it's normal, it's time to put result in the cache, and then it use always the cache so there is no synchronization.
+But if we inspect the diagram in the last part we see that theres is other synchronization. They are in the core of the compiler. I can't easily add a cache map to this part of code.
 I think it's too much necessary time to fix this ... So I keep as is, it's still better than at the beggining.
 
 === Switch compiler class in Maven plugin
@@ -91,11 +92,9 @@ This PR have been merged in version 2.4.3 of the plugin : https://github.com/leo
 
 === Benchmark
 
-I made a little benchmark with two projects : one with 400 jsp and one with 2700 jsp.
+I made a little benchmark with one project with 2700 jsp.
 I test this on HP ZBook i7 Windows 7.
 
-* 400 jsp
-
 |===
 | |Time
 
@@ -109,24 +108,6 @@ I test this on HP ZBook i7 Windows 7.
 |21s
 
 |4 threads parallel compiler
-|17s
-|===
-
-* 2700 jsp
-
-|===
-| |Time
-
-|2 threads compiler by default
-|50s
-
-|2 threads parallel compiler
-|30sec
-
-|4 threads compiler by default
-|21s
-
-|4 threads parallel compiler
-|17s
+|1min2s
 |===
 
