@@ -111,13 +111,13 @@ I test this on HP ZBook i7 Windows 7.
 |1min02s
 
 |8 threads JDTCompiler
-|21s
+|1min40s
 
 |8 threads ParallelJDTCompiler
 |0min54s
 
 |16 threads JDTCompiler
-|21s
+|1min39s
 
 |16 threads ParallelJDTCompiler
 |0min49s
