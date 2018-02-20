@@ -48,16 +48,19 @@ Note : I override tomcat-jasper in this configuration in order to use version 8.
 == Giving more threads
 
 We have many jsp (> 500), so the compilation take time. We can increase numbers of parallel thread. Usually i five 4 threads, but for now I want to improve this.
-So I test with 16 threads. But surprise, the global time it's not better than 4. Let's see what happen with jvisualvm : 
+So I test with 16 threads. *But surprise, the global time it's not better than 4*. Let's see what happen with jvisualvm : 
 
-TODO 
+image::threadsSynchronizedJDTCompiler.PNG[]
+
+We see there is many synchronization phase on each threads, this is not good for global performance.
 
 == Try to fix synchronization
 
-I want to avoid synchronization phase, so I look at the code. The main problem is the code who call "TODO".
-I try to rewrite part of it to totally avoid calling such a code.
-But some part of code can't be rewriting easylly, so I decided to add a synchronized hash map to add cache mecanism. 
-With this feature I improve synchronized parts, Java Mission Control let me confirm that :
+I want to avoid synchronization phase, so I look at the code. The main problem is the code who call _java.util.jar.jarFile_, and it's called by _sun.misc.URL.classPath.getResource(String)_
+In the compiler the method who called that most of the time are _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_ and _org.apache.jasper.compiler.JDTCompiler$1.isPackage(String)_
+I try to rewrite part of it to totally avoid calling such a code, this is the case of _org.apache.jasper.compiler.JDTCompiler$1.isPackage(String)_.
+But some part of code can't be rewriting easylly, so I decided to add a synchronized hash map to add cache mecanism, this is the case of _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_.
+With this 2 fix I improve synchronized parts, jvisualvm let me confirm that :
 
 TODO
 
