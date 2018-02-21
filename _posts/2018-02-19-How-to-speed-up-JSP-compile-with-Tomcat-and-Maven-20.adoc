@@ -1,15 +1,15 @@
 :hp-tags: Tomcat, JSP, Maven
 :published_at: 2018-02-19
 
-= How to compile JSP with Tomcat and Maven faster 2.0
+= How to speed up JSP compile with Tomcat and Maven : 2.0
 
-I already write a blog post on this topic here : https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html
-Since this, I have proposed some PR to the project https://github.com/leonardehrenfried/jspc-maven-plugin, and now I'm an official commiter.
-So I use this plugin in my work to compile many JSP each day, and I try to always compile faster.
+I've already written a blog post on this topic : https://tcollignon.github.io/2016/12/04/How-to-compile-JSP-with-Tomcat-and-Maven-faster.html
+Meanwhile, I have proposed some PR to the project https://github.com/leonardehrenfried/jspc-maven-plugin, and now I'm an official committer.
+I use this plugin in my work every day to compile many JSP, and I always try to compile faster.
 
 == How to compile JSP
 
-Like I said in my other blog post this is my actual Maven configuration : 
+Like I said in my other blog post this is my current Maven configuration : 
 
 [source,xml]
 ----
@@ -47,31 +47,31 @@ Note : I override tomcat-jasper in this configuration in order to use version 8.
 
 == Giving more threads
 
-We have many jsp (> 500), so the compilation take time. We can increase numbers of parallel thread. Usually i five 4 threads, but for now I want to improve this.
-So I test with 16 threads. *But surprise, the global time it's not better than 4*. Let's see what happen with jvisualvm : 
+Our project includes many jsp (> 3000), so the compilation take time. We can increase number of parallel threads. Usually I use 4 threads, but for now I want to improve this.
+So I test with 16 threads. *But surprise, the global time is not better than with 4 threads*. Let's see what happen with jvisualvm : 
 
 image::threadsSynchronizedJDTCompiler.PNG[]
 
-We see there is many synchronization phase on each threads, this is not good for global performance.
+We can see that there are many synchronization phases for each threads. That is not good for global performance.
 
-== Try to fix synchronization
+== Trying to fix synchronization
 
-I want to avoid synchronization phase, so I look at the code. The main problem is the code who call _java.util.jar.jarFile_, and it's called by _sun.misc.URL.classPath.getResource(String)_
-In the compiler the method who called that most of the time are _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_ and _org.apache.jasper.compiler.JDTCompiler$1.isPackage(String)_
+I want to avoid these synchronization phases, so I take a look at the source code. The main problem is the code which call _java.util.jar.jarFile_, and it's called by _sun.misc.URL.classPath.getResource(String)_
+In the compiler the methods which called that most of the time are _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_ and _org.apache.jasper.compiler.JDTCompiler$1.isPackage(String)_
 I try to rewrite part of it to totally avoid calling such a code, this is the case of _org.apache.jasper.compiler.JDTCompiler$1.isPackage(String)_.
-But some part of code can't be rewriting easylly, so I decided to add a synchronized hash map to add cache mecanism, this is the case of _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_.
-With this 2 fix I improve synchronized parts, jvisualvm let me confirm that :
+But some part of code can't be rewriting easily, so I decided to add a synchronized hash map to add cache mechanism. This is the case of _org.apache.jasper.compiler.JDTCompiler$1.findType(String)_.
+With this 2 fixes I improve synchronized parts, jvisualvm confirms that :
 
 image::threadsSynchronizedParallelJDTCompiler.PNG[]
 
-It's better ! We see that at the beggining there is a lot of syncrhonization, it's normal, it's time to put result in the cache, and then it use always the cache so there is no synchronization.
-But if we inspect the diagram in the last part we see that theres is other synchronization. They are in the core of the compiler. I can't easily add a cache map to this part of code.
-I think it's too much necessary time to fix this ... So I keep as is, it's still better than at the beggining.
+It's better ! We see that at the beginning there are a lot of syncrhonizations, it's a normal behavior. It's time to put results in the cache, and after that the cache will always be used, so there will be no more synchronization phase.
+But if we inspect the diagram in the last part we see that theres are other synchronizations. They are in the core of the compiler. I can't easily add a cache map to this part of code.
+I think it will take's too much time to fix this ... So I don't fix that, it's still better than at the beginning.
 
 === Switch compiler class in Maven plugin
 
-To use this improvment with Maven goal, I add a new option call "compilerClass" and I add a new Compiler in the plugin.
-So by default compilerClass=org.apache.jasper.compiler.JDTCompiler, and it's work perfectly with 1 thread, but when we have more than 2 threads it preferable to use the new one "org.apache.jasper.compiler.ParallelJDTCompiler".
+To use this improvement with Maven goal, I add a new option call "compilerClass" and I add a new Compiler in the plugin.
+So by default compilerClass=org.apache.jasper.compiler.JDTCompiler, and it's working perfectly with 1 thread. But when we have more than 2 threads it's better to use the new one "org.apache.jasper.compiler.ParallelJDTCompiler".
 This PR have been merged in version 2.4.3 of the plugin : https://github.com/leonardehrenfried/jspc-maven-plugin/releases/tag/jspc-maven-plugin-2.4.3
 
 [source,xml]
@@ -92,11 +92,11 @@ This PR have been merged in version 2.4.3 of the plugin : https://github.com/leo
 
 === Benchmark
 
-I made a little benchmark with one project with ~3000 jsp.
+I made a little benchmark including one project with ~3000 jsp.
 I test this on HP ZBook i7 Windows 7.
 
 |===
-| |Time
+| |Duration
 
 |2 threads JDTCompiler
 |2min28s
