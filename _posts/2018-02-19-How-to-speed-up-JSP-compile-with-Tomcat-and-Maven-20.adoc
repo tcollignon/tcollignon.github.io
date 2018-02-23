@@ -123,3 +123,7 @@ I test this on HP ZBook i7 Windows 7.
 |0min49s
 |===
 
+=== Notes
+
+There is a incompatibility with maven 3.3.X and version 2.4.3 of jspc-maven-plugin. If you use maven 3.3.X you must take version 2.4.4 of the plugin.
+
