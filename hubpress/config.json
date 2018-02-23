@@ -21,5 +21,21 @@
   },
   "theme": {
     "name": "saga"
+  },
+  "urls": {
+    "site": "https://tcollignon.github.io",
+    "hubpress": "https://tcollignon.github.io",
+    "theme": "//tcollignon.github.io/themes/saga",
+    "images": "https://tcollignon.github.io/images"
+  },
+  "initialisationConfigComponent": {
+    "name": "initialise-configuration",
+    "computed": {},
+    "methods": {},
+    "staticRenderFns": [
+      null,
+      null,
+      null
+    ]
   }
 }
