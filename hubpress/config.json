@@ -2,7 +2,8 @@
   "meta": {
     "username": "tcollignon",
     "repositoryName": "tcollignon.github.io",
-    "branch": "master"
+    "branch": "master",
+    "cname": ""
   },
   "site": {
     "title": "TCO Blog",
@@ -10,17 +11,24 @@
     "logo": "images/tux.png",
     "cover": "images/mustang.png",
     "googleAnalytics": "UA-88524010-1",
-    "disqus": "https-tcollignon-github-io"
+    "disqus": "https-tcollignon-github-io",
+    "delay": "",
+    "postsPerPage": ""
   },
   "socialnetwork": {
     "email": "tomiphone3G@gmail.com",
     "twitter": "@collignont",
     "linkedin": "https://fr.linkedin.com/in/thomas-collignon-707224121",
     "facebook": "",
-    "github": "tcollignon"
+    "github": "tcollignon",
+    "googleplus": "",
+    "instagram": "",
+    "pinterest": "",
+    "flickr": "",
+    "stackoverflow": ""
   },
   "theme": {
-    "name": "saga"
+    "name": "ghostium"
   },
   "urls": {
     "site": "https://tcollignon.github.io",
