@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Test Maven 3.6.0</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Test Maven 3.6.0">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:url" content="https://tcollignon.github.io">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Test Maven 3.6.0">
+    <meta property="og:description" content="">
+    <meta property="og:site_name" content="TCO Blog">
+
+    <meta itemprop="name" content="Test Maven 3.6.0">
+    <meta itemprop="description" content="">
+
+    <meta name="twitter:site" content="@yourblogtwitter">
+    
+    <meta name="twitter:creator" content="@yourtwitter">
+    
+    <meta property="article:author" content="https://www.facebook.com/yourprofile">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/yourblogprofile">
+    
+    <meta property="fb:admins" content="">
+    
+    <meta name="google-site-verification" content="">
+    
+    <link rel="author" href="https://plus.google.com/yourprofile">
+    
+    <meta name="theme-color" content="">
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link href="//fonts.googleapis.com/" rel="dns-prefetch">
+    <link href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400&subset=latin,latin-ext" rel="stylesheet">
+
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/main.min.css?v=1540762969698">
+    <link rel="stylesheet" href="//tcollignon.github.io/themes/ghostium/assets/css/asciidoctor-foundation.css?v=1540762969698"/>
+
+    <script type="text/javascript">
+      var ga_ua = 'UA-XXXXX-X';
+      
+      var disqus_shortname = 'example';
+      
+      var enable_pjax = true;
+
+      // Pace Options
+      // ==============
+      window.paceOptions = {
+        catchupTime: 100,
+        minTime: 100,
+        elements: false,
+        restartOnRequestAfter: 500,
+        startOnPageLoad: false
+      }
+
+      // Ghostium Globals
+      // ==============
+      window.GHOSTIUM = {};
+      GHOSTIUM.haveGA = typeof ga_ua !== 'undefined' && ga_ua !== 'UA-XXXXX-X';
+      GHOSTIUM.haveDisqus = typeof disqus_shortname !== 'undefined' && disqus_shortname !== 'example';
+      GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
+    </script>
+
+    <script src="//tcollignon.github.io/themes/ghostium/assets/js/head-scripts.min.js?v=1540762969698"></script>
+
+    <link rel="canonical" href="https://tcollignon.github.io/2018/10/28/Test-Maven-360.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="TCO Blog" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Test Maven 3.6.0" />
+    <meta property="og:description" content="This is a same blog post as the previous one for maven 3.5.0-alpha-1 here : https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html A new version of Maven (3.6.0) is currently in Apache [VOTE]. Binaries can be found here : https://dist.apache.org/repos/dist/dev/" />
+    <meta property="og:url" content="https://tcollignon.github.io/2018/10/28/Test-Maven-360.html" />
+    <meta property="og:image" content="https://maven.apache.org/images/maven-logo-black-on-white.png" />
+    <meta property="article:published_time" content="2018-10-28T00:00:00.000Z" />
+    <meta property="article:tag" content="Maven" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Test Maven 3.6.0" />
+    <meta name="twitter:description" content="This is a same blog post as the previous one for maven 3.5.0-alpha-1 here : https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html A new version of Maven (3.6.0) is currently in Apache [VOTE]. Binaries can be found here : https://dist.apache.org/repos/dist/dev/" />
+    <meta name="twitter:url" content="https://tcollignon.github.io/2018/10/28/Test-Maven-360.html" />
+    <meta name="twitter:image:src" content="https://maven.apache.org/images/maven-logo-black-on-white.png" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "TCO Blog",
+    "author": {
+        "@type": "Person",
+        "name": "COLLIGNON Thomas",
+        "image": "https://avatars0.githubusercontent.com/u/1019783?v=4",
+        "url": "https://tcollignon.github.io/author/tcollignon/",
+        "sameAs": "https://tcollignon.github.io"
+    },
+    "headline": "Test Maven 3.6.0",
+    "url": "https://tcollignon.github.io/2018/10/28/Test-Maven-360.html",
+    "datePublished": "2018-10-28T00:00:00.000Z",
+    "image": "https://maven.apache.org/images/maven-logo-black-on-white.png",
+    "keywords": "Maven",
+    "description": "This is a same blog post as the previous one for maven 3.5.0-alpha-1 here : https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html A new version of Maven (3.6.0) is currently in Apache [VOTE]. Binaries can be found here : https://dist.apache.org/repos/dist/dev/"
+}
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="TCO Blog" href="https://tcollignon.github.io/rss/" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/themes/prism-okaidia.min.css">
+    
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  </head>
+  <body class="post-template tag-Maven">
+
+    <button data-action="open-drawer" id="drawer-button" class="drawer-button"><i class="fa fa-bars"></i></button>
+    <nav tabindex="-1" class="drawer">
+      <div class="drawer-container">
+        <!--.drawer-search(role="search")-->
+        <ul role="navigation" class="drawer-list">
+          
+          <li class="drawer-list-item">
+            <a href="/" data-pjax>
+              <i class="fa fa-home"></i>Home
+            </a>
+          </li>
+          <li class="drawer-list-item">
+            <a href="https://tcollignon.github.io/rss/">
+              <i class="fa fa-rss"></i>Subscribe to Feed
+            </a>
+          </li>
+          <li class="drawer-list-divider"></li>
+          <li class="drawer-list-item drawer-list-title">
+            Follow me
+          </li>
+          
+          
+          <li class="drawer-list-item">
+            <a href="@collignont" title="Twitter" target="_blank">
+              <i class="fa fa-twitter"></i>Twitter
+            </a>
+          </li>
+          <li class="drawer-list-item">
+            <a href="tcollignon" title="Github" target="_blank">
+              <i class="fa fa-github"></i>Github
+            </a>
+          </li>
+          <li class="drawer-list-item">
+            <a href="https://fr.linkedin.com/in/thomas-collignon-707224121" title="LinkedIn" target="_blank">
+              <i class="fa fa-linkedin"></i>LinkedIn
+            </a>
+          </li>
+          <li class="drawer-list-item">
+            <a href="mailto:tomiphone3G@gmail.com" title="Email" target="_blank">
+              <i class="fa fa-envelope-o"></i>Email
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="drawer-overlay"></div>
+    <main id="container" role="main" class="container">
+      <div class="surface">
+        <div class="surface-container">
+          <div data-pjax-container class="content">
+            
+<section class="wrapper wrapper-post">
+  <div class="wrapper-container">
+    <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post post tag-Maven">
+        <section class="post-container">
+          <header class="post-header">
+            <ul class="post-meta-list">
+              <li class="post-meta-item">
+                <time datetime="2018-10-28" itemprop="datePublished">
+                  a day ago
+                </time>
+              </li>
+                <li class="post-meta-item">
+                    <a itemprop="articleSection" href="/" data-pjax>Maven</a> 
+                </li>
+              <li class="post-meta-item">
+                <a href="#disqus_thread" data-disqus-identifier="">Comments</a>
+              </li>
+            </ul>
+            <h1 itemprop="name headline" class="post-title"><a href="https://tcollignon.github.io/2018/10/28/Test-Maven-360.html" itemprop="url" data-pjax title="Test Maven 3.6.0">Test Maven 3.6.0</a></h1>
+            <!--h2 itemprop="about" class="post-subtitle"></h2-->
+          </header>
+          <aside class="post-side">
+            <div class="post-author">
+                <a href="https://tcollignon.github.io" class="post-author-avatar">
+                  <img src="https://avatars0.githubusercontent.com/u/1019783?v&#x3D;4" alt="COLLIGNON Thomas">
+                </a>
+              <div class="post-author-info">
+                <a href="https://tcollignon.github.io" class="post-author-name">
+                  COLLIGNON Thomas
+                </a>
+                <p class="post-author-bio"></p>
+              </div>
+            </div>
+          </aside>
+          <div itemprop="articleBody" class="post-body">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is a same blog post as the previous one for maven 3.5.0-alpha-1 here : <a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html" class="bare">https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html</a></p>
+</div>
+<div class="paragraph">
+<p>A new version of Maven (3.6.0) is currently in Apache [VOTE].</p>
+</div>
+<div class="paragraph">
+<p>Binaries can be found here : <a href="https://dist.apache.org/repos/dist/dev/maven/maven-3/3.6.0/binaries/" class="bare">https://dist.apache.org/repos/dist/dev/maven/maven-3/3.6.0/binaries/</a></p>
+</div>
+<div class="paragraph">
+<p>This is the result of my tests with this version.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configurations">Configurations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_macosx_dev">MacOsX Dev</h3>
+<div class="paragraph">
+<p>mvn -v
+Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
+Maven home: /Applications/apache-maven-3.6.0
+Java version: 1.8.0_51, vendor: Oracle Corporation, runtime: /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre
+Default locale: fr_FR, platform encoding: UTF-8
+OS name: "mac os x", version: "10.13.6", arch: "x86_64", family: "mac"</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jenkins_continous_integration_2_89_x_on_rhel7">Jenkins Continous Integration (2.89.X) On RHEL7</h3>
+<div class="paragraph">
+<p>mvn -v
+Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
+Maven home: /opt/apache-maven-3.6.0
+Java version: 10.0.1, vendor: Oracle Corporation, runtime: /opt/jdk10.0.1
+Default locale: fr_FR, platform encoding: Cp1252
+OS name: "linux", version: "3.10.0-327.36.3.el7.x86_64", arch: "amd64", family: "unix"</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1st_project_takari_way">1st project : Takari way</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this little multi-module project, I have the following plugins :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>takari-lifecycle-plugin:1.12.1</p>
+</li>
+<li>
+<p>maven-surefire-plugin:2.18.1</p>
+</li>
+<li>
+<p>maven-compiler-plugin:3.1</p>
+</li>
+<li>
+<p>maven-resources-plugin:2.6</p>
+</li>
+<li>
+<p>maven-enforcer-plugin:1.3.1</p>
+</li>
+<li>
+<p>maven-war-plugin:2.3</p>
+</li>
+<li>
+<p>swagger-maven-plugin:2.2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition, I have t he following extensions (describe in a .mvn folder) :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>takari-local-repository:0.11.2</p>
+</li>
+<li>
+<p>takari-filemanager:0.8.3</p>
+</li>
+<li>
+<p>aether-connector-okhttp:0.16.0</p>
+</li>
+<li>
+<p>takari-smart-builder:0.4.0</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I run mvn commands with takari smart builder and 6 threads.</p>
+</div>
+<div class="sect2">
+<h3 id="_compile_and_tests">Compile and Tests</h3>
+<div class="paragraph">
+<p>mvn clean install</p>
+</div>
+<div class="paragraph">
+<p>Build is SUCCESS with 3.5.0 but <strong>is not</strong> with 3.6.0 details further.</p>
+</div>
+<div class="paragraph">
+<p>This is the performance test :</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Maven 3.5.0 (MacOs)</th>
+<th class="tableblock halign-left valign-top">Maven 3.6.0 (MacOs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1st run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01:29 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01:40 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2nd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01:25 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01:28 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3rd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01:27 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01:29 min</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><em>NOTE</em>: By default the build is <strong>FAILURE</strong> with 3.6.0 because of this configuration :
+I have a multi-module project with this configuration of swagger-maven-plugin in web module.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;resources&gt;
+   &lt;resource&gt;
+       &lt;directory&gt;src/main/resources&lt;/directory&gt;
+       &lt;excludes&gt;
+           &lt;exclude&gt;NOTICE.txt&lt;/exclude&gt;
+       &lt;/excludes&gt;
+       &lt;filtering&gt;true&lt;/filtering&gt;
+   &lt;/resource&gt;
+&lt;/resources&gt;
+&lt;plugin&gt;
+   &lt;groupId&gt;com.github.kongchen&lt;/groupId&gt;
+   &lt;artifactId&gt;swagger-maven-plugin&lt;/artifactId&gt;
+   &lt;version&gt;2.2&lt;/version&gt;
+   &lt;configuration&gt;
+       &lt;apiSources&gt;
+           &lt;apiSource&gt;
+&lt;outputTemplate&gt;${project.build.resources[0].directory}/markdown.swagger.mustache&lt;/outputTemplate&gt;
+           &lt;/apiSource&gt;
+       &lt;/apiSources&gt;
+   &lt;/configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It raise this error :</p>
+</div>
+<div class="paragraph">
+<p>[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.</p>
+</div>
+<div class="paragraph">
+<p>Indeed my template is in /Users/thomascollignon/Documents/Workspace_eclipse/neo/<strong>web</strong>/src/main/resources/markdown.swagger.mustache</p>
+</div>
+<div class="paragraph">
+<p>If I change it to this configuration this is <strong>SUCCESS</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;resources&gt;
+   &lt;resource&gt;
+       &lt;directory&gt;src/main/resources&lt;/directory&gt;
+       &lt;excludes&gt;
+           &lt;exclude&gt;NOTICE.txt&lt;/exclude&gt;
+       &lt;/excludes&gt;
+       &lt;filtering&gt;true&lt;/filtering&gt;
+   &lt;/resource&gt;
+&lt;/resources&gt;
+&lt;plugin&gt;
+   &lt;groupId&gt;com.github.kongchen&lt;/groupId&gt;
+   &lt;artifactId&gt;swagger-maven-plugin&lt;/artifactId&gt;
+   &lt;version&gt;2.2&lt;/version&gt;
+   &lt;configuration&gt;
+       &lt;apiSources&gt;
+           &lt;apiSource&gt;
+&lt;outputTemplate&gt;${project.basedir}/src/main/resources/markdown.swagger.mustache&lt;/outputTemplate&gt;
+           &lt;/apiSource&gt;
+       &lt;/apiSources&gt;
+   &lt;/configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>It&#8217;s a small thing, but it can maybe broke several build.</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compile_only_no_tests">Compile ONLY (no Tests)</h3>
+<div class="paragraph">
+<p>mvn clean install -DskipTests</p>
+</div>
+<div class="paragraph">
+<p>Build is SUCCESS with both version 3.5.0 and 3.6.0 (after correction, see above).</p>
+</div>
+<div class="paragraph">
+<p>This is the performance test :</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Maven 3.5.0 (MacOs)</th>
+<th class="tableblock halign-left valign-top">Maven 3.6.0 (MacOs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1st run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11.028 s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12.140 s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2nd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18.098 s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12.108 s</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3rd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17.225 s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11.246 s</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_in_eclipse_ide">In Eclipse IDE</h3>
+<div class="paragraph">
+<p>I have Eclipse Oxygen (old version :) ) standard edition with m2e.
+I have switch Maven settings to take my 3.6.0 local installation.
+Everything works good, maven update/compilation/tests/Tomcat launch.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2nd_project_classic_way">2nd project : Classic way</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this bigger multi-module project (10 000 classes, 63 modules, 150 000 unit tests), I have the following plugins :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>maven-surefire-plugin:2.22.0</p>
+</li>
+<li>
+<p>maven-compiler-plugin:3.7.0</p>
+</li>
+<li>
+<p>maven-resources-plugin:3.1.0</p>
+</li>
+<li>
+<p>maven-war-plugin:3.2.2</p>
+</li>
+<li>
+<p>maven-jar-plugin:3.1.0</p>
+</li>
+<li>
+<p>maven-install-plugin:2.5.2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I have no takari.</p>
+</div>
+<div class="sect2">
+<h3 id="_compile_and_tests_2">Compile and Tests</h3>
+<div class="paragraph">
+<p>mvn clean install -T 4</p>
+</div>
+<div class="paragraph">
+<p>Build is SUCCESS with both version 3.5.3 and 3.6.0</p>
+</div>
+<div class="paragraph">
+<p>This is the performance test :</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Maven 3.5.3 (Jenkins)</th>
+<th class="tableblock halign-left valign-top">Maven 3.6.0 (Jenkins)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1st run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06:19 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06:21 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2nd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06:13 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06:30 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3rd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06:18 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06:26 min</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Functionnaly it&#8217;s the same, compilation is ok, tests are OK too.
+At performance level I&#8217;ve seen no improvment.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compile_only_no_tests_2">Compile ONLY (no tests)</h3>
+<div class="paragraph">
+<p>mvn clean install -T 4 -DskipTests</p>
+</div>
+<div class="paragraph">
+<p>Build is SUCCESS with both version 3.5.3 and 3.6.0</p>
+</div>
+<div class="paragraph">
+<p>This is the performance test :</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Maven 3.5.3 (Jenkins)</th>
+<th class="tableblock halign-left valign-top">Maven 3.6.0 (Jenkins)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1st run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03:41 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03:39 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2nd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03:37 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03:41 min</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3rd run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03:44 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03:39 min</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For now I haven&#8217;t see any blocker to this new version of Apache Maven!</p>
+</div>
+<div class="paragraph">
+<p>&#8658; Just see a little difference in a configuration with <em>${project.build.resources[0].directory}</em></p>
+</div>
+<div class="paragraph">
+<p>The performance are almost the same as 3.5.0/3.5.3.</p>
+</div>
+<div class="paragraph">
+<p>Good job Apache Maven Team</p>
+</div>
+</div>
+</div>
+          </div>
+          <footer class="post-footer">
+            <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
+                <a href="https://tcollignon.github.io" class="post-author-avatar">
+                  <img itemprop="image" src="https://avatars0.githubusercontent.com/u/1019783?v&#x3D;4" alt="COLLIGNON Thomas">
+                </a>
+              <div class="post-author-info">
+                <h4 class="post-footer-heading">Written By</h4>
+                <a href="https://tcollignon.github.io" itemprop="url" class="post-author-name">
+                  <span itemprop="name">COLLIGNON Thomas</span>
+                </a>
+                <p itemprop="description" class="post-author-bio"></p>
+                  <p class="post-author-location">Metz</p>
+                  <p class="post-author-website">
+                    <a href="https://tcollignon.github.io" rel="nofollow">https://tcollignon.github.io</a>
+                  </p>
+                <p class="post-info">
+                  <b class="post-info-title">Published on</b>
+                  <time class="post-date">October 28, 2018</time>
+                </p>
+              </div>
+            </div>
+            <div class="post-social">
+              <h4 class="post-footer-heading">Spread the word</h4>
+              <a href="#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
+              <a href="#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
+              <a href="#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
+            </div>
+          </footer>
+        </section>
+
+      <section class="post-comments">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        var disqus_shortname = 'https-tcollignon-github-io'; // required: replace example with your forum shortname
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </section>
+
+    </article>
+
+    <footer role="contentinfo" class="footer">
+      <p><small>© 2018. All Rights Reserved.</small></p>
+      <p><small><a href="http://ghostium.oswaldoacauan.com/" target="_blank">Ghostium Theme</a> by <a href="http://twitter.com/oswaldoacauan" target="_blank">@oswaldoacauan</a></small></p>
+      <p><small>Proudly published with <a href="https://hubpress.github.io" target="_blank">HubPress</a></small></p>
+    </footer>
+  </div>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/prism.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        // hljs.initHighlightingOnLoad();
+      </script>
+
+    <script src="//tcollignon.github.io/themes/ghostium/assets/js/foot-scripts.min.js?v=1540762969698"></script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-88524010-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>
