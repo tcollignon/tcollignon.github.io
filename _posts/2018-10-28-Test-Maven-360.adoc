@@ -16,7 +16,7 @@ This is the result of my tests with this version.
 
 === MacOsX Dev
 
-mvn -v
+ mvn -v
 Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
 Maven home: /Applications/apache-maven-3.6.0
 Java version: 1.8.0_51, vendor: Oracle Corporation, runtime: /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre
@@ -25,7 +25,7 @@ OS name: "mac os x", version: "10.13.6", arch: "x86_64", family: "mac"
 
 === Jenkins Continous Integration (2.89.X) On RHEL7
 
-mvn -v
+ mvn -v
 Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
 Maven home: /opt/apache-maven-3.6.0
 Java version: 10.0.1, vendor: Oracle Corporation, runtime: /opt/jdk10.0.1
