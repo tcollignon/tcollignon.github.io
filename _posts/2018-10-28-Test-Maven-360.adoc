@@ -1,0 +1,249 @@
+:hp-image: https://maven.apache.org/images/maven-logo-black-on-white.png
+:hp-tags: Maven
+:published_at: 2018-10-28
+
+= Test Maven 3.6.0
+
+This is a same blog post as the previous one for maven 3.5.0-alpha-1 here : https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html
+
+A new version of Maven (3.6.0) is currently in Apache [VOTE].
+
+Binaries can be found here : https://dist.apache.org/repos/dist/dev/maven/maven-3/3.6.0/binaries/
+
+This is the result of my tests with this version.
+
+== Configurations
+
+=== MacOsX Dev
+
+mvn -v
+Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
+Maven home: /Applications/apache-maven-3.6.0
+Java version: 1.8.0_51, vendor: Oracle Corporation, runtime: /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre
+Default locale: fr_FR, platform encoding: UTF-8
+OS name: "mac os x", version: "10.13.6", arch: "x86_64", family: "mac"
+
+=== Jenkins Continous Integration (2.89.X) On RHEL7
+
+mvn -v
+Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
+Maven home: /opt/apache-maven-3.6.0
+Java version: 10.0.1, vendor: Oracle Corporation, runtime: /opt/jdk10.0.1
+Default locale: fr_FR, platform encoding: Cp1252
+OS name: "linux", version: "3.10.0-327.36.3.el7.x86_64", arch: "amd64", family: "unix"
+
+== 1st project : Takari way
+
+In this little multi-module project, I have the following plugins : 
+
+* takari-lifecycle-plugin:1.12.1
+* maven-surefire-plugin:2.18.1
+* maven-compiler-plugin:3.1
+* maven-resources-plugin:2.6
+* maven-enforcer-plugin:1.3.1
+* maven-war-plugin:2.3
+* swagger-maven-plugin:2.2
+
+In addition, I have t he following extensions (describe in a .mvn folder) : 
+
+* takari-local-repository:0.11.2
+* takari-filemanager:0.8.3
+* aether-connector-okhttp:0.16.0
+* takari-smart-builder:0.4.0
+
+I run mvn commands with takari smart builder and 6 threads.
+
+=== Compile and Tests
+
+mvn clean install
+
+Build is SUCCESS with 3.5.0 but *is not* with 3.6.0 details further.
+
+This is the performance test :
+
+|===
+| |Maven 3.5.0 (MacOs) |Maven 3.6.0 (MacOs)
+
+|1st run
+|01:29 min
+|01:40 min
+
+|2nd run
+|01:25 min
+|01:28 min
+
+|3rd run
+|01:27 min
+|01:29 min
+|===
+
+_NOTE_: By default the build is *FAILURE* with 3.6.0 because of this configuration : 
+I have a multi-module project with this configuration of swagger-maven-plugin in web module.
+
+[source,xml]
+----
+<resources>
+   <resource>
+       <directory>src/main/resources</directory>
+       <excludes>
+           <exclude>NOTICE.txt</exclude>
+       </excludes>
+       <filtering>true</filtering>
+   </resource>
+</resources>
+<plugin>
+   <groupId>com.github.kongchen</groupId>
+   <artifactId>swagger-maven-plugin</artifactId>
+   <version>2.2</version>
+   <configuration>
+       <apiSources>
+           <apiSource>
+<outputTemplate>${project.build.resources[0].directory}/markdown.swagger.mustache</outputTemplate>
+           </apiSource>
+       </apiSources>
+   </configuration>
+----   
+
+It raise this error : 
+
+[ERROR] Failed to execute goal com.github.kongchen:swagger-maven-plugin:2.2:generate (default) on project neo-web: Template /Users/thomascollignon/Documents/Workspace_eclipse/neo/src/main/resources/markdown.swagger.mustache not found. You can go to https://github.com/kongchen/api-doc-template to get templates. -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+
+Indeed my template is in /Users/thomascollignon/Documents/Workspace_eclipse/neo/*web*/src/main/resources/markdown.swagger.mustache
+
+If I change it to this configuration this is *SUCCESS*
+
+[source,xml]
+----
+<resources>
+   <resource>
+       <directory>src/main/resources</directory>
+       <excludes>
+           <exclude>NOTICE.txt</exclude>
+       </excludes>
+       <filtering>true</filtering>
+   </resource>
+</resources>
+<plugin>
+   <groupId>com.github.kongchen</groupId>
+   <artifactId>swagger-maven-plugin</artifactId>
+   <version>2.2</version>
+   <configuration>
+       <apiSources>
+           <apiSource>
+<outputTemplate>${project.basedir}/src/main/resources/markdown.swagger.mustache</outputTemplate>
+           </apiSource>
+       </apiSources>
+   </configuration>
+----
+
+_It's a small thing, but it can maybe broke several build._
+
+=== Compile ONLY (no Tests)
+
+mvn clean install -DskipTests
+
+Build is SUCCESS with both version 3.5.0 and 3.6.0 (after correction, see above).
+
+This is the performance test :
+
+|===
+| |Maven 3.5.0 (MacOs) |Maven 3.6.0 (MacOs)
+
+|1st run
+|11.028 s
+|12.140 s
+
+|2nd run
+|18.098 s
+|12.108 s
+
+|3rd run
+|17.225 s
+|11.246 s
+|===
+
+=== In Eclipse IDE
+
+I have Eclipse Oxygen (old version :) ) standard edition with m2e.
+I have switch Maven settings to take my 3.6.0 local installation.
+Everything works good, maven update/compilation/tests/Tomcat launch.
+
+
+== 2nd project : Classic way
+
+In this bigger multi-module project (10 000 classes, 63 modules, 150 000 unit tests), I have the following plugins : 
+
+* maven-surefire-plugin:2.22.0
+* maven-compiler-plugin:3.7.0
+* maven-resources-plugin:3.1.0
+* maven-war-plugin:3.2.2
+* maven-jar-plugin:3.1.0
+* maven-install-plugin:2.5.2
+
+I have no takari.
+
+=== Compile and Tests
+
+mvn clean install -T 4
+
+Build is SUCCESS with both version 3.5.3 and 3.6.0
+
+This is the performance test :
+
+|===
+| |Maven 3.5.3 (Jenkins) |Maven 3.6.0 (Jenkins)
+
+|1st run
+|06:19 min
+|06:21 min
+
+|2nd run
+|06:13 min
+|06:30 min
+
+|3rd run
+|06:18 min
+|06:26 min
+|===
+
+Functionnaly it's the same, compilation is ok, tests are OK too.
+At performance level I've seen no improvment. 
+
+
+=== Compile ONLY (no tests)
+
+mvn clean install -T 4 -DskipTests
+
+Build is SUCCESS with both version 3.5.3 and 3.6.0
+
+This is the performance test :
+
+|===
+| |Maven 3.5.3 (Jenkins) |Maven 3.6.0 (Jenkins)
+
+|1st run
+|03:41 min
+|03:39 min
+
+|2nd run
+|03:37 min
+|03:41 min
+
+|3rd run
+|03:44 min
+|03:39 min
+|===
+
+
+== Conclusion
+
+For now I haven't see any blocker to this new version of Apache Maven!
+
+=> Just see a little difference in a configuration with _${project.build.resources[0].directory}_
+
+The performance are almost the same as 3.5.0/3.5.3.
+
+Good job Apache Maven Team
