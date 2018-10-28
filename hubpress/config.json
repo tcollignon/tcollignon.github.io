@@ -33,7 +33,7 @@
   "urls": {
     "site": "https://tcollignon.github.io",
     "hubpress": "https://tcollignon.github.io",
-    "theme": "//tcollignon.github.io/themes/saga",
+    "theme": "//tcollignon.github.io/themes/ghostium",
     "images": "https://tcollignon.github.io/images"
   },
   "initialisationConfigComponent": {
@@ -43,6 +43,10 @@
     "staticRenderFns": [
       null,
       null,
+      null
+    ],
+    "_compiled": true,
+    "beforeCreate": [
       null
     ]
   }
