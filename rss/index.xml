@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Sun, 28 Oct 2018 21:42:49 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Test Maven 3.6.0]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[TCO Blog]]></title><description><![CDATA[Blog about Java, Maven, Jenkins and others ]]></description><link>https://tcollignon.github.io</link><image><url>images/mustang.png</url><title>TCO Blog</title><link>https://tcollignon.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Sun, 28 Oct 2018 21:45:07 GMT</lastBuildDate><atom:link href="https://tcollignon.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Test Maven 3.6.0]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>This is a same blog post as the previous one for maven 3.5.0-alpha-1 here : <a href="https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html" class="bare">https://tcollignon.github.io/2017/02/27/Test-Maven-350-alpha-1.html</a></p>
@@ -19,24 +19,28 @@
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_macosx_dev">MacOsX Dev</h3>
-<div class="paragraph">
-<p>mvn -v
+<div class="literalblock">
+<div class="content">
+<pre> mvn -v
 Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
 Maven home: /Applications/apache-maven-3.6.0
 Java version: 1.8.0_51, vendor: Oracle Corporation, runtime: /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre
 Default locale: fr_FR, platform encoding: UTF-8
-OS name: "mac os x", version: "10.13.6", arch: "x86_64", family: "mac"</p>
+OS name: "mac os x", version: "10.13.6", arch: "x86_64", family: "mac"</pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_jenkins_continous_integration_2_89_x_on_rhel7">Jenkins Continous Integration (2.89.X) On RHEL7</h3>
-<div class="paragraph">
-<p>mvn -v
+<div class="literalblock">
+<div class="content">
+<pre> mvn -v
 Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-24T20:41:47+02:00)
 Maven home: /opt/apache-maven-3.6.0
 Java version: 10.0.1, vendor: Oracle Corporation, runtime: /opt/jdk10.0.1
 Default locale: fr_FR, platform encoding: Cp1252
-OS name: "linux", version: "3.10.0-327.36.3.el7.x86_64", arch: "amd64", family: "unix"</p>
+OS name: "linux", version: "3.10.0-327.36.3.el7.x86_64", arch: "amd64", family: "unix"</pre>
+</div>
 </div>
 </div>
 </div>
